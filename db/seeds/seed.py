@@ -2,10 +2,27 @@ import json
 import psycopg2
 
 with open('../data/test-data/films.json', 'r') as json_file:
-    loaded_films = json.load(json_file)
+    film_data = json.load(json_file)
 
-sample_data = loaded_films['results'][0]
-print(sample_data)
+values_list = []
+film_list = film_data['results']
+for film in film_list: 
+    values_list.append((
+        film["adult"],
+        film["backdrop_path"],
+        film["genre_ids"],
+        film["id"],        
+        film["original_language"],        
+        film["original_title"],
+        film["overview"],
+        film["popularity"],
+        film["poster_path"],
+        film["release_date"],
+        film["title"],        
+        film["video"],
+        film["vote_average"],
+        film["vote_count"],
+    ))
 
 drop_table_sql = """
 DROP TABLE IF EXISTS films;
@@ -50,7 +67,7 @@ try:
     connection.commit()
 
     # Insert data into the users table
-    cursor.executemany(insert_data_sql, sample_data)
+    cursor.executemany(insert_data_sql, values_list)
     connection.commit()
 
     print("Data seeded successfully!")
