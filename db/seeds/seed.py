@@ -4,10 +4,45 @@ import psycopg2
 with open('../data/test-data/films.json', 'r') as json_file:
     film_data = json.load(json_file)
 
-values_list = []
+with open('../data/test-data/users.json', 'r') as json_file:
+    user_data = json.load(json_file)
+
+print(user_data)
+
+user_values = []
+user_list = user_data['users'] # iterates through the array
+for user in user_list:
+    user_values.append(( 
+        user["username"],
+        user["password"],
+        user["email"]
+    ))
+    #append fulfils same role as push in js
+
+drop_users_table = """
+    DROP TABLE IF EXISTS users;
+"""
+
+create_users_table = """
+    CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(255),
+    password VARCHAR(255),
+    email VARCHAR(255)
+    );
+"""
+
+insert_user_data = """
+    INSERT INTO users 
+    (username, password, email)
+    VALUES 
+    (%s, %s, %s)
+"""
+
+film_values = []
 film_list = film_data['results']
 for film in film_list: 
-    values_list.append((
+    film_values.append((
         film["adult"],
         film["backdrop_path"],
         film["genre_ids"],
@@ -24,11 +59,11 @@ for film in film_list:
         film["vote_count"],
     ))
 
-drop_table_sql = """
+drop_films_table = """
 DROP TABLE IF EXISTS films;
 """
 
-create_table_sql = """
+create_films_table = """
     CREATE TABLE films (
         adult BOOLEAN,
         backdrop_path VARCHAR(255),
@@ -47,7 +82,7 @@ create_table_sql = """
     );
 """
 
-insert_data_sql = """
+insert_film_data = """
     INSERT INTO films 
     (adult, backdrop_path, genre_ids, id, original_language, original_title, overview, popularity, poster_path, release_date, title, video, vote_average, vote_count)
     VALUES 
@@ -58,16 +93,28 @@ try:
     connection = psycopg2.connect("dbname=filmz_app_test")
     cursor = connection.cursor()
 
-    # Delete the users table
-    cursor.execute(drop_table_sql)
+    # Delete the films table
+    cursor.execute(drop_films_table)
+    connection.commit()
+
+     # Delete the users table
+    cursor.execute(drop_users_table)
+    connection.commit()
+
+    # Create the films table
+    cursor.execute(create_films_table)
     connection.commit()
 
     # Create the users table
-    cursor.execute(create_table_sql)
+    cursor.execute(create_users_table)
+    connection.commit()
+
+    # Insert data into the films table
+    cursor.executemany(insert_film_data, film_values)
     connection.commit()
 
     # Insert data into the users table
-    cursor.executemany(insert_data_sql, values_list)
+    cursor.executemany(insert_user_data, user_values)
     connection.commit()
 
     print("Data seeded successfully!")
