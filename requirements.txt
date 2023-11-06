@@ -1,0 +1,7 @@
+#package.json equivalent? running pip3 install -r requirements.txt installs everything in here in the env 
+
+flask
+python-dotenv
+psycopg2-binary
+pytest
+requests
