@@ -1,1 +1,1 @@
-README to be written. 
+reset the readme
