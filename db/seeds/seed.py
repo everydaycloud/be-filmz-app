@@ -7,6 +7,9 @@ with open('../data/test-data/films.json', 'r') as json_file:
 with open('../data/test-data/users.json', 'r') as json_file:
     user_data = json.load(json_file)
 
+with open('../data/test-data/watchlist.json', 'r') as json_file:
+    watchlist_data = json.load(json_file)
+    
 with open('../data/test-data/reviews.json', 'r') as json_file:
     review_data = json.load(json_file)
 
@@ -103,6 +106,34 @@ for review in review_data:
         review["created_at"],
     ))
 
+watchlist_values = []
+for entry in watchlist_data:
+    watchlist_values.append(( 
+        entry["user_id"],
+        entry["film_id"]
+    ))
+
+drop_watchlist_table = """
+    DROP TABLE IF EXISTS watchlist;
+"""
+
+create_watchlist_table = """
+    CREATE TABLE watchlist (
+        user_id INT REFERENCES users(user_id),
+        film_id INT REFERENCES films(id),
+        is_watched BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(user_id, film_id)
+    );
+"""
+
+insert_watchlist_data = """
+    INSERT INTO watchlist 
+    (user_id, film_id)
+    VALUES 
+    (%s, %s);
+"""
+
 drop_reviews_table = """
     DROP TABLE IF EXISTS reviews;
 """
@@ -162,9 +193,13 @@ try:
     connection = psycopg2.connect("dbname=filmz_app_test")
     cursor = connection.cursor()
 
-   # Delete the review_comments table
+    # Delete the review_comments table
     cursor.execute(drop_review_comments_table)
     connection.commit() 
+    
+    # Delete the watchlist table
+    cursor.execute(drop_watchlist_table)
+    connection.commit()
     
     # Delete the reviews table
     cursor.execute(drop_reviews_table)
@@ -174,7 +209,7 @@ try:
     cursor.execute(drop_films_table)
     connection.commit()
 
-     # Delete the users table
+    # Delete the users tables
     cursor.execute(drop_users_table)
     connection.commit()
 
@@ -184,6 +219,10 @@ try:
 
     # Create the users table
     cursor.execute(create_users_table)
+    connection.commit()
+
+    # Create the watchlist table
+    cursor.execute(create_watchlist_table)
     connection.commit()
 
     # Create the reviews table
@@ -202,11 +241,15 @@ try:
     cursor.executemany(insert_user_data, user_values)
     connection.commit()
 
+    # Insert data into the watchlist table
+    cursor.executemany(insert_watchlist_data, watchlist_values)
+    connection.commit()
+    
     # Insert data into the reviews table
     cursor.executemany(insert_review_data, review_values)
     connection.commit()
 
-    # Insert data into the reviews table
+    # Insert data into the reviews_comment table
     cursor.executemany(insert_review_comment_data, review_comment_values)
     connection.commit()
 
