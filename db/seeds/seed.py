@@ -1,5 +1,6 @@
 import json
 import psycopg2
+from config import config
 
 with open('../data/test-data/films.json', 'r') as json_file:
     film_data = json.load(json_file)
@@ -188,9 +189,12 @@ insert_review_comment_data = """
     VALUES 
     (%s, %s, %s, %s, %s);
 """
-
+connection = None
 try:
-    connection = psycopg2.connect("dbname=filmz_app_test")
+    params = config('../database.ini')
+    print(params, 'PARAMS')
+
+    connection = psycopg2.connect(**params)
     cursor = connection.cursor()
 
     # Delete the review_comments table
