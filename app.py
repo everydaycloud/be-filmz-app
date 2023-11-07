@@ -1,8 +1,7 @@
-import os
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask, jsonify
-# from db.seeds.seed import connection
+from flask import Flask
+from endpoints.fetch_all_films import fetch_all_films
 
 import json
 
@@ -21,16 +20,8 @@ def get_endpoints():
 
 @app.route("/films", methods=["GET"])
 def get_all_films():
-    with connection: 
-        with connection.cursor() as cursor:
-            cursor.execute('SELECT * FROM films;')
-            films=cursor.fetchall()
-            if films:
-                result = []
-                for film in films:
-                    result.append({"id": film[3], "original_title": film[5], "overview": film[6], "poster_path": film[8],
-                                   "release_date": film[9], "vote_average": film[12], "vote_count": film[13]})
-    return {"films": result}
+    result = fetch_all_films(connection)
+    return result
 
 # GET a user by user_id
 @app.route('/users/<int:user_id>', methods=['GET'])
@@ -42,3 +33,8 @@ def get_user_by_id(user_id):
     return {'user': user}        
 
 # @app.route("/*")
+
+# Error endpoint attempt (Not necessary for the current test to pass)
+# @app.route('/<path:other>')
+# def other_path(other):
+#     return f'Error 404: "{other}" is an invalid path'

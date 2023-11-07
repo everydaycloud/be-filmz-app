@@ -39,4 +39,16 @@ def test_get_user_by_id_endpoint():
     assert user[2] == 'pyramids'
     assert user[3] == 'yahya@yahrmyarmy.com'
 
+ #Error tests (Need to be looked at later)       
+
+def test_invalid_path():
+    relative_url = ['/cheese']
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 404
+    assert response.reason == "NOT FOUND"
+ 
+ 
 
