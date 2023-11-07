@@ -7,7 +7,8 @@ with open('../data/test-data/films.json', 'r') as json_file:
 with open('../data/test-data/users.json', 'r') as json_file:
     user_data = json.load(json_file)
 
-print(user_data)
+with open('../data/test-data/watchlist.json', 'r') as json_file:
+    watchlist_data = json.load(json_file)
 
 user_values = []
 user_list = user_data['users'] # iterates through the array
@@ -89,36 +90,48 @@ insert_film_data = """
     (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
 """
 
+watchlist_values = []
+for entry in watchlist_data:
+    watchlist_values.append(( 
+        entry["user_id"],
+        entry["film_id"]
+    ))
+
 drop_watchlist_table = """
-DROP TABLE IF EXISTS watchlist;
+    DROP TABLE IF EXISTS watchlist;
 """
 
 create_watchlist_table = """
-CREATE TABLE watchlist (
-user_id INT REFERENCES users(user_id),
-film_id INT REFERENCES films(id),
-watched BOOLEAN DEFAULT FALSE,
-created_at TIMESTAMP DEFAULT NOW(),
-UNIQUE(user_id, film_id)
-)
+    CREATE TABLE watchlist (
+        user_id INT REFERENCES users(user_id),
+        film_id INT REFERENCES films(id),
+        is_watched BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(user_id, film_id)
+    );
 """
 
-# insert_watchlist_data = """
-# INSERT INTO watchlist (user_id, film_id)
-# VALUES (1, 99);
-# """
-# above is how we might add new entry (film 99) to the watchlist of (user 1)
+insert_watchlist_data = """
+    INSERT INTO watchlist 
+    (user_id, film_id)
+    VALUES 
+    (%s, %s);
+"""
 
 try:
     connection = psycopg2.connect("dbname=filmz_app_test")
     cursor = connection.cursor()
 
-    # Delete the films table
-    cursor.execute(drop_films_table)
+    # Delete the watchlist table
+    cursor.execute(drop_watchlist_table)
+    connection.commit()
+    
+    # Delete the users table
+    cursor.execute(drop_users_table)
     connection.commit()
 
-     # Delete the users table
-    cursor.execute(drop_users_table)
+    # Delete the films table
+    cursor.execute(drop_films_table)
     connection.commit()
 
     # Create the films table
@@ -129,12 +142,20 @@ try:
     cursor.execute(create_users_table)
     connection.commit()
 
+    # Create the watchlist table
+    cursor.execute(create_watchlist_table)
+    connection.commit()
+
     # Insert data into the films table
     cursor.executemany(insert_film_data, film_values)
     connection.commit()
 
     # Insert data into the users table
     cursor.executemany(insert_user_data, user_values)
+    connection.commit()
+
+    # Insert data into the watchlist table
+    cursor.executemany(insert_watchlist_data, watchlist_values)
     connection.commit()
 
     print("Data seeded successfully!")
