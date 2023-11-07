@@ -7,17 +7,18 @@ with open('../data/test-data/films.json', 'r') as json_file:
 with open('../data/test-data/users.json', 'r') as json_file:
     user_data = json.load(json_file)
 
-print(user_data)
+with open('../data/test-data/reviews.json', 'r') as json_file:
+    review_data = json.load(json_file)
+
 
 user_values = []
-user_list = user_data['users'] # iterates through the array
+user_list = user_data['users'] 
 for user in user_list:
     user_values.append(( 
         user["username"],
         user["password"],
         user["email"]
     ))
-    #append fulfils same role as push in js
 
 drop_users_table = """
     DROP TABLE IF EXISTS users;
@@ -36,7 +37,7 @@ insert_user_data = """
     INSERT INTO users 
     (username, password, email)
     VALUES 
-    (%s, %s, %s)
+    (%s, %s, %s);
 """
 
 film_values = []
@@ -86,8 +87,43 @@ insert_film_data = """
     INSERT INTO films 
     (adult, backdrop_path, genre_ids, id, original_language, original_title, overview, popularity, poster_path, release_date, title, video, vote_average, vote_count)
     VALUES 
-    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
 """
+
+review_values = []
+for review in review_data:
+    review_values.append(( 
+        review["user_id"],
+        review["film_id"],
+        review["body"],
+        review["rating"],
+        review["votes"],
+        review["created_at"],
+    ))
+
+drop_reviews_table = """
+    DROP TABLE IF EXISTS reviews;
+"""
+
+create_reviews_table = """
+    CREATE TABLE reviews (
+        review_id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(user_id),
+        film_id INTEGER REFERENCES films(id),
+        body TEXT,
+        rating INTEGER NOT NULL,
+        votes INTEGER NOT NULL,
+        created_at DATE NOT NULL
+    );
+"""
+ 
+insert_review_data = """
+    INSERT INTO reviews 
+    (user_id, film_id, body, rating, votes, created_at)
+    VALUES 
+    (%s, %s, %s, %s, %s, %s);
+"""
+
 
 try:
     connection = psycopg2.connect("dbname=filmz_app_test")
@@ -101,6 +137,10 @@ try:
     cursor.execute(drop_users_table)
     connection.commit()
 
+    # Delete the reviews table
+    cursor.execute(drop_reviews_table)
+    connection.commit()
+
     # Create the films table
     cursor.execute(create_films_table)
     connection.commit()
@@ -109,12 +149,20 @@ try:
     cursor.execute(create_users_table)
     connection.commit()
 
+    # Create the reviews table
+    cursor.execute(create_reviews_table)
+    connection.commit()
+
     # Insert data into the films table
     cursor.executemany(insert_film_data, film_values)
     connection.commit()
 
     # Insert data into the users table
     cursor.executemany(insert_user_data, user_values)
+    connection.commit()
+
+    # Insert data into the reviews table
+    cursor.executemany(insert_review_data, review_values)
     connection.commit()
 
     print("Data seeded successfully!")
