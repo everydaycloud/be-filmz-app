@@ -32,4 +32,13 @@ def get_all_films():
                                    "release_date": film[9], "vote_average": film[12], "vote_count": film[13]})
     return {"films": result}
 
+# GET a user by user_id
+@app.route('/users/<int:user_id>', methods=['GET'])
+def get_user_by_id(user_id):
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM users WHERE user_id = (%s);', (user_id,))
+            user = cursor.fetchone()
+    return {'user': user}        
+
 # @app.route("/*")
