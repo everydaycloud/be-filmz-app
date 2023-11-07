@@ -89,6 +89,26 @@ insert_film_data = """
     (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
 """
 
+drop_watchlist_table = """
+DROP TABLE IF EXISTS watchlist;
+"""
+
+create_watchlist_table = """
+CREATE TABLE watchlist (
+user_id INT REFERENCES users(user_id),
+film_id INT REFERENCES films(id),
+watched BOOLEAN DEFAULT FALSE,
+created_at TIMESTAMP DEFAULT NOW(),
+UNIQUE(user_id, film_id)
+)
+"""
+
+# insert_watchlist_data = """
+# INSERT INTO watchlist (user_id, film_id)
+# VALUES (1, 99);
+# """
+# above is how we might add new entry (film 99) to the watchlist of (user 1)
+
 try:
     connection = psycopg2.connect("dbname=filmz_app_test")
     cursor = connection.cursor()
