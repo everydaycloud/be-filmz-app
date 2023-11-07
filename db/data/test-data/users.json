@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "username": "Yahya",
+      "password": "pyramids",
+      "email": "yahya@yahrmyarmy.com"
+    },
+    {
+      "username": "Billy",
+      "password": "GOAT",
+      "email": "billy@yahrmyarmy.com"
+    },
+    {
+      "username": "Luke",
+      "password": "Trees",
+      "email": "luke@yahrmyarmy.com"
+    },
+    {
+      "username": "Craig",
+      "password": "greg",
+      "email": "craig@yahrmyarmy.com"
+    },
+    {
+      "username": "Barbara",
+      "password": "fish",
+      "email": "barbara@yahrmyarmy.com"
+    },
+    {
+      "username": "Harry",
+      "password": "face",
+      "email": "harry@yahrmyarmy.com"
+    }
+  ]
+}
