@@ -1,0 +1,86 @@
+[
+  {
+    "user_id": 1,
+    "review_id": 1,
+    "body": "Great review! I totally agree.",
+    "created_at": "2023-11-12",
+    "votes": 5
+  },
+  {
+    "user_id": 2,
+    "review_id": 1,
+    "body": "I liked the movie, but I didn't love it.",
+    "created_at": "2023-11-12",
+    "votes": 3
+  },
+  {
+    "user_id": 3,
+    "review_id": 3,
+    "body": "I had the same feeling about Chamber of Secrets.",
+    "created_at": "2023-11-13",
+    "votes": 2
+  },
+  {
+    "user_id": 4,
+    "review_id": 4,
+    "body": "I can't wait to watch Goblet of Fire again!",
+    "created_at": "2023-11-14",
+    "votes": 4
+  },
+  {
+    "user_id": 5,
+    "review_id": 5,
+    "body": "Order of the Phoenix made me cry!",
+    "created_at": "2023-11-15",
+    "votes": 6
+  },
+  {
+    "user_id": 2,
+    "review_id": 2,
+    "body": "The Chamber of Secrets is a classic!",
+    "created_at": "2023-11-12",
+    "votes": 4
+  },
+  {
+    "user_id": 3,
+    "review_id": 3,
+    "body": "I love the magical world of Harry Potter!",
+    "created_at": "2023-11-13",
+    "votes": 7
+  },
+  {
+    "user_id": 4,
+    "review_id": 4,
+    "body": "The Triwizard Tournament was so exciting!",
+    "created_at": "2023-11-14",
+    "votes": 5
+  },
+  {
+    "user_id": 5,
+    "review_id": 5,
+    "body": "Harry, Ron, and Hermione are the best trio!",
+    "created_at": "2023-11-15",
+    "votes": 8
+  },
+  {
+    "user_id": 1,
+    "review_id": 6,
+    "body": "The Deathly Hallows was an epic conclusion!",
+    "created_at": "2023-11-16",
+    "votes": 9
+  },
+  {
+    "user_id": 2,
+    "review_id": 6,
+    "body": "I'm going to miss the Hogwarts trio.",
+    "created_at": "2023-11-16",
+    "votes": 6
+  },
+  {
+    "user_id": 3,
+    "review_id": 7,
+    "body": "Part 1 left me eagerly waiting for Part 2!",
+    "created_at": "2023-11-17",
+    "votes": 4
+  }
+]
