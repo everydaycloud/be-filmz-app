@@ -13,6 +13,9 @@ with open('../data/test-data/watchlist.json', 'r') as json_file:
 with open('../data/test-data/reviews.json', 'r') as json_file:
     review_data = json.load(json_file)
 
+with open('../data/test-data/review_comments.json', 'r') as json_file:
+    review_comments_data = json.load(json_file)
+
 user_values = []
 user_list = user_data['users'] 
 for user in user_list:
@@ -154,11 +157,46 @@ insert_review_data = """
     (%s, %s, %s, %s, %s, %s);
 """
 
+review_comment_values = []
+for comment in review_comments_data:
+    review_comment_values.append(( 
+        comment["user_id"],
+        comment["review_id"],
+        comment["body"],
+        comment["created_at"],
+        comment["votes"],
+    ))
+
+drop_review_comments_table = """
+    DROP TABLE IF EXISTS review_comments;
+"""
+
+create_review_comments_table = """
+    CREATE TABLE review_comments (
+        review_comment_id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(user_id),
+        review_id INTEGER REFERENCES reviews(review_id),
+        body TEXT,
+        created_at DATE NOT NULL,
+        votes INTEGER NOT NULL
+    );
+"""
+
+insert_review_comment_data = """
+    INSERT INTO review_comments 
+    (user_id, review_id, body, created_at, votes)
+    VALUES 
+    (%s, %s, %s, %s, %s);
+"""
 
 try:
     connection = psycopg2.connect("dbname=filmz_app_test")
     cursor = connection.cursor()
 
+    # Delete the review_comments table
+    cursor.execute(drop_review_comments_table)
+    connection.commit() 
+    
     # Delete the watchlist table
     cursor.execute(drop_watchlist_table)
     connection.commit()
@@ -166,7 +204,7 @@ try:
     # Delete the reviews table
     cursor.execute(drop_reviews_table)
     connection.commit()
-  
+
     # Delete the films table
     cursor.execute(drop_films_table)
     connection.commit()
@@ -174,7 +212,7 @@ try:
     # Delete the users tables
     cursor.execute(drop_users_table)
     connection.commit()
-  
+
     # Create the films table
     cursor.execute(create_films_table)
     connection.commit()
@@ -191,6 +229,10 @@ try:
     cursor.execute(create_reviews_table)
     connection.commit()
 
+    # Create the reviews table
+    cursor.execute(create_review_comments_table)
+    connection.commit()
+
     # Insert data into the films table
     cursor.executemany(insert_film_data, film_values)
     connection.commit()
@@ -205,6 +247,10 @@ try:
     
     # Insert data into the reviews table
     cursor.executemany(insert_review_data, review_values)
+    connection.commit()
+
+    # Insert data into the reviews_comment table
+    cursor.executemany(insert_review_comment_data, review_comment_values)
     connection.commit()
 
     print("Data seeded successfully!")
