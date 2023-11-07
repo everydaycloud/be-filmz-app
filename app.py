@@ -2,6 +2,7 @@ import psycopg2
 from dotenv import load_dotenv
 from flask import Flask
 from endpoints.fetch_all_films import fetch_all_films
+from endpoints.add_user import add_new_user
 
 import json
 
@@ -31,6 +32,12 @@ def get_user_by_id(user_id):
             cursor.execute('SELECT * FROM users WHERE user_id = (%s);', (user_id,))
             user = cursor.fetchone()
     return {'user': user}        
+
+@app.route("/users", methods=["POST"])
+def post_new_user(request):
+    result = add_new_user(request, connection)
+    return result
+
 
 # @app.route("/*")
 
