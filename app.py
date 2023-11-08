@@ -7,6 +7,7 @@ from endpoints.add_user import add_new_user
 from endpoints.get_reviews_by_user_id import get_reviews_by_user_id
 from endpoints.get_user_by_user_id import get_user_by_user_id
 from endpoints.get_watchlist_by_user_id import get_watchlist_by_user_id
+from endpoints.add_new_friend import add_new_friend
 import json
 
 load_dotenv()
@@ -53,7 +54,13 @@ def post_new_user():
     result = add_new_user(data, connection)
     return jsonify(result)
 
-
+# POST new friend to friends table 
+@app.route("/users/<int:user_id>/friends", methods=["POST"])
+def add_friend(user_id):
+    data = request.get_json()
+    result = (add_new_friend(data, connection, user_id))
+    return jsonify(result)
+   
 # @app.route("/*")
 
 # Error endpoint attempt (Not necessary for the current test to pass)

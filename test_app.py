@@ -3,18 +3,15 @@ from urllib.parse import urljoin
 import pytest
 from db.seeds.seed import seed_database
 
-
 ENDPOINT="http://127.0.0.1:5000"
 
 # reseed after test 
-
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def seed_db():
     seed_database()
     yield
 
-
-def test_home_endpoint():
+def test_home_endpoint(seed_db):
     relative_url = ["/"]
     for rel_url in relative_url:
         url = urljoin(ENDPOINT, rel_url)
@@ -22,7 +19,7 @@ def test_home_endpoint():
     response=requests.get(url)
     assert response.status_code == 200
 
-def test_get_all_films_endpoint():
+def test_get_all_films_endpoint(seed_db):
     relative_url = ["/films"]
     for rel_url in relative_url:
         url = urljoin(ENDPOINT, rel_url)
@@ -44,7 +41,7 @@ def test_get_all_films_endpoint():
             assert True
         else: assert False
 
-def test_get_films_by_film_id():
+def test_get_films_by_film_id(seed_db):
     relative_url= ["/films/767"]
     for rel_url in relative_url:
         url = urljoin(ENDPOINT, rel_url)
@@ -58,7 +55,7 @@ def test_get_films_by_film_id():
     else: assert False
         
 # testing get user by specific ID endpoint
-def test_get_user_by_id_endpoint():
+def test_get_user_by_id_endpoint(seed_db):
     relative_url = '/users/1'
     url = ENDPOINT + relative_url
     response=requests.get(url)
@@ -73,7 +70,7 @@ def test_get_user_by_id_endpoint():
 		}
 
 # testing get revies by specific user ID endpoint
-def test_get_reviews_by_user_id_endpoint():
+def test_get_reviews_by_user_id_endpoint(seed_db):
     relative_url = '/users/2/reviews'
     url = ENDPOINT + relative_url
     response=requests.get(url)
@@ -96,8 +93,8 @@ def test_get_reviews_by_user_id_endpoint():
     for review in returned_reviews:
         assert all(key in review for key in expected_review_structure)
 
-# testing get revies by specific user ID endpoint
-def test_get_watchlist_by_user_id_endpoint():
+# testing get reviews by specific user ID endpoint
+def test_get_watchlist_by_user_id_endpoint(seed_db):
     relative_url = '/users/3/watchlist'
     url = ENDPOINT + relative_url
     response=requests.get(url)
@@ -116,7 +113,7 @@ def test_get_watchlist_by_user_id_endpoint():
     for item in returned_watchlist:
         assert set(item.keys()) == expected_keys
 
-def test_add_new_user_endpoint():
+def test_add_new_user_endpoint(seed_db):
     relative_url = '/users'
     url = ENDPOINT + relative_url
     user_data = {
@@ -132,9 +129,24 @@ def test_add_new_user_endpoint():
     required_keys = ["id", "username", "email", "password"]
     assert all(key in user for key in required_keys)
 
+# testing adding new friend
+def test_add_new_friend_endpoint(seed_db):
+    relative_url = '/users/1/friends'
+    url = ENDPOINT + relative_url
+    friend_data = {
+	    "friend_id": 5
+    }
+
+    response = requests.post(url, json=friend_data)
+    assert response.status_code == 200
+
+    result = response.json()
+    required_keys = ["message", "user1", "user2"]
+    assert all(key in result for key in required_keys)
+
  #Error tests (Need to be looked at later)       
 
-def test_invalid_path():
+def test_invalid_path(seed_db):
     relative_url = ['/cheese']
     for rel_url in relative_url:
         url = urljoin(ENDPOINT, rel_url)
