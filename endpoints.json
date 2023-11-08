@@ -1,5 +1,39 @@
 
 {
+  "GET /": {
+    "description": "serves up a json representation of all the available endpoints of the api"
+  },
+  "GET /films": {
+    "description": "serves an array of all films",
+    "queries": [],
+    "exampleResponse": {
+      "films": [
+        {
+          "id": 671,
+          "original_title": "Harry Potter and the Philosopher's Stone",
+          "overview": "Harry Potter has lived under the stairs at his aunt and uncle's house his whole life. But on his 11th birthday, he learns he's a powerful wizard\u2014with a place waiting for him at the Hogwarts School of Witchcraft and Wizardry. As he learns to harness his newfound powers with the help of the school's kindly headmaster, Harry uncovers the truth about his parents' deaths\u2014and about the villain who's to blame.",
+          "poster_path": "/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg",
+          "release_date": "Fri, 16 Nov 2001 00:00:00 GMT",
+          "vote_average": "7.915",
+          "vote_count": 25554
+        }
+      ]
+    }
+  },
+  "GET /films/<film_id>": {
+    "description": "serves a single film object of requested id",
+    "queries": [],
+    "exampleResponse": 
+    {
+      "id": 767,
+      "original_title": "Harry Potter and the Half-Blood Prince",
+      "overview": "As Lord Voldemort tightens his grip on both the Muggle and wizarding worlds, Hogwarts is no longer a safe haven. Harry suspects perils may even lie within the castle, but Dumbledore is more intent upon preparing him for the final battle fast approaching. Together they work to find the key to unlock Voldemorts defenses and to this end, Dumbledore recruits his old friend and colleague Horace Slughorn, whom he believes holds crucial information. Even as the decisive showdown looms, romance blossoms for Harry, Ron, Hermione and their classmates. Love is in the air, but danger lies ahead and Hogwarts may never be the same again.",
+      "poster_path": "/z7uo9zmQdQwU5ZJHFpv2Upl30i1.jpg",
+      "release_date": "Wed, 15 Jul 2009 00:00:00 GMT",
+      "vote_average": "7.695",
+      "vote_count": 18235
+    }
+  },
     "GET /": {
       "description": "serves up a json representation of all the available endpoints of the api"
     },
@@ -18,5 +52,22 @@
             "vote_count": 25554
           }]
       }
-    }
+    },
+    "POST /users": {
+      "description": "adds new user returning an object of the added user",
+      "queries": {
+        "username": "bigfilmfreakz",
+        "password": "filmzzz",
+        "email": "filmzz@yahmyarmy.com"
+      },
+      "exampleResponse":
+      {
+        "email": "filmzz@yahmyarmy.com",
+        "id": 7,
+        "message": "New user created.",
+        "password": "filmzzz",
+        "username": "bigfilmfreakz"
+      }
+      
   }
+}

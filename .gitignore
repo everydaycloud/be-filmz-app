@@ -1,4 +1,0 @@
-.env*
-.flaskenv
-playground*
-database.ini
