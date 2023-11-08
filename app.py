@@ -1,12 +1,11 @@
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, request, jsonify
 from endpoints.fetch_all_films import fetch_all_films
+from endpoints.fetch_films_by_film_id import fetch_films_by_film_id
 from endpoints.add_user import add_new_user
 from endpoints.get_reviews_by_user_id import get_reviews_by_user_id
 from endpoints.get_user_by_user_id import get_user_by_user_id
-
-
 import json
 
 load_dotenv()
@@ -27,6 +26,11 @@ def get_all_films():
     result = fetch_all_films(connection)
     return result
 
+@app.route("/films/<film_id>", methods=["GET"])
+def get_films_by_film_id(film_id):
+    result = fetch_films_by_film_id(connection, film_id)
+    return result
+
 # GET a user by user_id
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_single_user(user_id):
@@ -37,11 +41,11 @@ def get_single_user(user_id):
 def get_reviews(user_id):
     return get_reviews_by_user_id(user_id, connection)
 
-
 @app.route("/users", methods=["POST"])
-def post_new_user(request):
-    result = add_new_user(request, connection)
-    return result
+def post_new_user():
+    data = request.get_json()
+    result = add_new_user(data, connection)
+    return jsonify(result)
 
 
 # @app.route("/*")
