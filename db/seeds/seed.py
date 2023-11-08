@@ -2,6 +2,7 @@ import json
 import psycopg2
 from db.config import load_db_config
 
+# function to seed database
 def seed_database():
 
     with open('./db/data/test-data/films.json', 'r') as json_file:
