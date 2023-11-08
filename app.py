@@ -5,6 +5,7 @@ from endpoints.fetch_all_films import fetch_all_films
 from endpoints.fetch_films_by_film_id import fetch_films_by_film_id
 from endpoints.add_user import add_new_user
 from endpoints.get_reviews_by_user_id import get_reviews_by_user_id
+from endpoints.get_reviews_by_film_id import fetch_reviews_by_film_id
 from endpoints.get_user_by_user_id import get_user_by_user_id
 from endpoints.get_watchlist_by_user_id import get_watchlist_by_user_id
 import json
@@ -41,6 +42,11 @@ def get_single_user(user_id):
 @app.route('/users/<int:user_id>/reviews', methods=['GET'])
 def get_reviews(user_id):
     return get_reviews_by_user_id(user_id, connection)
+
+# GET reviews by (film)id
+@app.route('/films/<int:film_id>/reviews', methods=['GET'])
+def get_reviews_by_film_id(film_id):
+    return fetch_reviews_by_film_id(film_id, connection)
 
 # GET watchlist by user_id
 @app.route('/users/<int:user_id>/watchlist', methods=['GET'])
