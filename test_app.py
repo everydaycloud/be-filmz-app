@@ -30,6 +30,19 @@ def test_get_all_films_endpoint():
             assert True
         else: assert False
 
+def test_get_films_by_film_id():
+    relative_url= ["/films/767"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    film = response.json()
+    required_keys = ["id", "original_title", "overview", "poster_path", 
+               "release_date", "vote_average", "vote_count"]
+    if all(key in film for key in required_keys):
+            assert True
+    else: assert False
+        
 # testing get user by specific ID endpoint
 def test_get_user_by_id_endpoint():
     relative_url = '/users/1'
