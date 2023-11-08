@@ -3,6 +3,9 @@ from dotenv import load_dotenv
 from flask import Flask
 from endpoints.fetch_all_films import fetch_all_films
 from endpoints.add_user import add_new_user
+from endpoints.get_reviews_by_user_id import get_reviews_by_user_id
+from endpoints.get_user_by_user_id import get_user_by_user_id
+
 
 import json
 
@@ -26,12 +29,14 @@ def get_all_films():
 
 # GET a user by user_id
 @app.route('/users/<int:user_id>', methods=['GET'])
-def get_user_by_id(user_id):
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute('SELECT * FROM users WHERE user_id = (%s);', (user_id,))
-            user = cursor.fetchone()
-    return {'user': user}        
+def get_single_user(user_id):
+       return get_user_by_user_id(user_id, connection)
+
+# GET reviews by user_id
+@app.route('/users/<int:user_id>/reviews', methods=['GET'])
+def get_reviews(user_id):
+    return get_reviews_by_user_id(user_id, connection)
+
 
 @app.route("/users", methods=["POST"])
 def post_new_user(request):
