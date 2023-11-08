@@ -6,6 +6,8 @@ from db.seeds.seed import seed_database
 
 ENDPOINT="http://127.0.0.1:5000"
 
+# reseed after test 
+
 @pytest.fixture
 def seed_db():
     seed_database()
