@@ -2,5 +2,5 @@
 .flaskenv
 playground*
 database.ini
-__pycache__/
 
+__pycache__/
