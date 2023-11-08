@@ -1,22 +1,22 @@
 import json
 import psycopg2
-from config import config
+from db.seeds.config import config
 
 def seed_database():
 
-    with open('../data/test-data/films.json', 'r') as json_file:
+    with open('./db/data/test-data/films.json', 'r') as json_file:
         film_data = json.load(json_file)
 
-    with open('../data/test-data/users.json', 'r') as json_file:
+    with open('./db/data/test-data/users.json', 'r') as json_file:
         user_data = json.load(json_file)
 
-    with open('../data/test-data/watchlist.json', 'r') as json_file:
+    with open('./db/data/test-data/watchlist.json', 'r') as json_file:
         watchlist_data = json.load(json_file)
         
-    with open('../data/test-data/reviews.json', 'r') as json_file:
+    with open('./db/data/test-data/reviews.json', 'r') as json_file:
         review_data = json.load(json_file)
 
-    with open('../data/test-data/review_comments.json', 'r') as json_file:
+    with open('./db/data/test-data/review_comments.json', 'r') as json_file:
         review_comments_data = json.load(json_file)
 
     user_values = []
@@ -193,7 +193,7 @@ def seed_database():
     """
     connection = None
     try:
-        params = config('../database.ini')
+        params = config('./db/database.ini')
         print(params, 'PARAMS')
 
         connection = psycopg2.connect(**params)
