@@ -14,7 +14,7 @@ def seed_db():
     yield
 
 
-def test_home_endpoint():
+def test_home_endpoint(seed_db):
     relative_url = ["/"]
     for rel_url in relative_url:
         url = urljoin(ENDPOINT, rel_url)
@@ -22,7 +22,7 @@ def test_home_endpoint():
     response=requests.get(url)
     assert response.status_code == 200
 
-def test_get_all_films_endpoint():
+def test_get_all_films_endpoint(seed_db):
     relative_url = ["/films"]
     for rel_url in relative_url:
         url = urljoin(ENDPOINT, rel_url)
@@ -44,7 +44,7 @@ def test_get_all_films_endpoint():
             assert True
         else: assert False
 
-def test_get_films_by_film_id():
+def test_get_films_by_film_id(seed_db):
     relative_url= ["/films/767"]
     for rel_url in relative_url:
         url = urljoin(ENDPOINT, rel_url)
@@ -58,7 +58,7 @@ def test_get_films_by_film_id():
     else: assert False
         
 # testing get user by specific ID endpoint
-def test_get_user_by_id_endpoint():
+def test_get_user_by_id_endpoint(seed_db):
     relative_url = '/users/1'
     url = ENDPOINT + relative_url
     response=requests.get(url)
@@ -73,7 +73,7 @@ def test_get_user_by_id_endpoint():
 		}
 
 # testing get revies by specific user ID endpoint
-def test_get_reviews_by_user_id_endpoint():
+def test_get_reviews_by_user_id_endpoint(seed_db):
     relative_url = '/users/2/reviews'
     url = ENDPOINT + relative_url
     response=requests.get(url)
@@ -97,7 +97,7 @@ def test_get_reviews_by_user_id_endpoint():
         assert all(key in review for key in expected_review_structure)
 
 # testing get revies by specific user ID endpoint
-def test_get_watchlist_by_user_id_endpoint():
+def test_get_watchlist_by_user_id_endpoint(seed_db):
     relative_url = '/users/3/watchlist'
     url = ENDPOINT + relative_url
     response=requests.get(url)
@@ -116,7 +116,7 @@ def test_get_watchlist_by_user_id_endpoint():
     for item in returned_watchlist:
         assert set(item.keys()) == expected_keys
 
-def test_add_new_user_endpoint():
+def test_add_new_user_endpoint(seed_db):
     relative_url = '/users'
     url = ENDPOINT + relative_url
     user_data = {
@@ -134,7 +134,7 @@ def test_add_new_user_endpoint():
 
  #Error tests (Need to be looked at later)       
 
-def test_invalid_path():
+def test_invalid_path(seed_db):
     relative_url = ['/cheese']
     for rel_url in relative_url:
         url = urljoin(ENDPOINT, rel_url)
