@@ -2,6 +2,7 @@ import psycopg2
 from dotenv import load_dotenv
 from flask import Flask
 from endpoints.fetch_all_films import fetch_all_films
+from endpoints.fetch_films_by_film_id import fetch_films_by_film_id
 
 import json
 
@@ -22,6 +23,12 @@ def get_endpoints():
 def get_all_films():
     result = fetch_all_films(connection)
     return result
+
+@app.route("/films/<film_id>", methods=["GET"])
+def get_films_by_film_id(film_id):
+    result = fetch_films_by_film_id(connection, film_id)
+    return result
+
 
 # Error endpoint attempt (Not necessary for the current test to pass)
 # @app.route('/<path:other>')
