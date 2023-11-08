@@ -1,0 +1,5 @@
+.env*
+.flaskenv
+playground*
+database.ini
+__pycache__/
