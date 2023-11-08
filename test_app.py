@@ -51,4 +51,29 @@ def test_invalid_path():
     assert response.reason == "NOT FOUND"
  
  
-
+# testing get reviews by specific ID endpoint
+def test_get_reviews_by_film_id_endpoint():
+    relative_url = '/films/671/reviews'
+    url = ENDPOINT + relative_url
+    response=requests.get(url)
+    assert response.status_code == 200    
+    reviews = response.json()['reviews']
+    assert len(reviews) == 2
+    assert reviews[0] == {
+      "body": "This movie is pure magic!",
+      "created_at": "Tue, 07 Nov 2023 00:00:00 GMT",
+      "film_id": 671,
+      "rating": 5,
+      "review_id": 1,
+      "user_id": 1,
+      "votes": 10
+    }
+    assert reviews[1] == {
+      "body": "The magic of the first movie is unforgettable!",
+      "created_at": "Sun, 12 Nov 2023 00:00:00 GMT",
+      "film_id": 671,
+      "rating": 5,
+      "review_id": 6,
+      "user_id": 5,
+      "votes": 12
+    }
