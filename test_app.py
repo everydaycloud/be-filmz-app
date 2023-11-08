@@ -89,6 +89,25 @@ def test_get_reviews_by_user_id_endpoint():
     for review in returned_reviews:
         assert all(key in review for key in expected_review_structure)
 
+# testing get revies by specific user ID endpoint
+def test_get_watchlist_by_user_id_endpoint():
+    relative_url = '/users/3/watchlist'
+    url = ENDPOINT + relative_url
+    response=requests.get(url)
+    assert response.status_code == 200    
+    returned_watchlist = response.json()['watchlist']
+    assert isinstance(returned_watchlist, list)
+    assert len(returned_watchlist) == 2
+    expected_keys = {
+        "backdrop_path", 
+        "created_at", 
+        "film_id", 
+        "is_watched", 
+        "title", 
+        "vote_average"
+    }
+    for item in returned_watchlist:
+        assert set(item.keys()) == expected_keys
 
 def test_add_new_user_endpoint():
     relative_url = '/users'
