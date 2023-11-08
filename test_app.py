@@ -1,7 +1,11 @@
 import requests
 from urllib.parse import urljoin
+import pytest
+
 
 ENDPOINT="http://127.0.0.1:5000"
+
+
 
 def test_home_endpoint():
     relative_url = ["/"]
@@ -51,6 +55,23 @@ def test_get_user_by_id_endpoint():
     assert user[1] == 'yahya'
     assert user[2] == 'pyramids'
     assert user[3] == 'yahya@yahrmyarmy.com'
+
+
+def test_add_new_user_endpoint():
+    relative_url = '/users'
+    url = ENDPOINT + relative_url
+    user_data = {
+	    "username": "bigfilmfreakz",
+	    "password": "filmzzz",
+	    "email": "filmzz@yahmyarmy.com"
+    }
+
+    response = requests.post(url, json=user_data)
+    assert response.status_code == 200
+
+    user = response.json()
+    required_keys = ["id", "username", "email", "password"]
+    assert all(key in user for key in required_keys)
 
  #Error tests (Need to be looked at later)       
 
