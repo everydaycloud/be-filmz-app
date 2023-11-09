@@ -1,4 +1,3 @@
-
 {
   "GET /": {
     "description": "serves up a json representation of all the available endpoints of the api"
@@ -34,25 +33,6 @@
       "vote_count": 18235
     }
   },
-    "GET /": {
-      "description": "serves up a json representation of all the available endpoints of the api"
-    },
-    "GET /films": {
-      "description": "serves an array of all films",
-      "queries": [],
-      "exampleResponse": {
-        "films": [
-          {
-            "id": 671,
-            "original_title": "Harry Potter and the Philosopher's Stone",
-            "overview": "Harry Potter has lived under the stairs at his aunt and uncle's house his whole life. But on his 11th birthday, he learns he's a powerful wizard\u2014with a place waiting for him at the Hogwarts School of Witchcraft and Wizardry. As he learns to harness his newfound powers with the help of the school's kindly headmaster, Harry uncovers the truth about his parents' deaths\u2014and about the villain who's to blame.",
-            "poster_path": "/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg",
-            "release_date": "Fri, 16 Nov 2001 00:00:00 GMT",
-            "vote_average": "7.915",
-            "vote_count": 25554
-          }]
-      }
-    },
     "POST /users": {
       "description": "adds new user returning an object of the added user",
       "queries": {
