@@ -13,6 +13,7 @@ from endpoints.fetch_user_by_username import fetch_user_by_username
 from endpoints.get_tmbd_data import get_popular_films
 from endpoints.get_tmbd_data import search_for_films
 from endpoints.get_tmbd_data import get_film_by_film_id
+from endpoints.get_friends_by_user_id import fetch_friends_by_user_id
 
 import json
 
@@ -88,6 +89,10 @@ def get_tmdb_search(film):
 @app.route("/tmdb/films/<int:film_id>", methods=["GET"])
 def get_tmdb_film(film_id):
     return get_film_by_film_id(film_id)
+
+@app.route("/users/<int:user_id>/friends", methods=["GET"])
+def get_friends_by_user_id(user_id):
+    return fetch_friends_by_user_id(user_id, connection)
    
 # @app.route("/*")
 

@@ -5,7 +5,7 @@ from seed import seed_database
 
 ENDPOINT="http://127.0.0.1:5000"
 
-# reseed after test 
+# Reseed after test 
 
 @pytest.fixture(autouse=True)
 def seed_db():
@@ -246,3 +246,20 @@ def test_get_no_user_by_username_endpoint(seed_db):
         assert response.status_code == 400
         response_text = response.json()
         assert response_text['message'] == 'User query required'
+
+def test_fetch_friends_by_user_id(seed_db):
+        relative_url = '/users/2/friends'
+        url = ENDPOINT + relative_url
+        response=requests.get(url)
+        assert response.status_code == 200
+        required_keys = ["my_id", "friend_id", "friend_name", "friends_since"]
+        if all(key in response for key in required_keys):
+            assert True
+
+def test_fetch_friends_by_user_id_no_friends(seed_db):
+        relative_url = '/users/6/friends'
+        url = ENDPOINT + relative_url
+        response=requests.get(url)
+        assert response.status_code == 200
+        assert response.json() == {"message": "You have no friends!"}
+
