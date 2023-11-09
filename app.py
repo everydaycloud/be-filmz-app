@@ -1,4 +1,4 @@
-import psycopg2
+from db.connection import get_connection
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from endpoints.fetch_all_films import fetch_all_films
@@ -21,7 +21,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # url = os.environ.get("dbname=filmz_app_test") # Might tweak later to test/local database
-connection = psycopg2.connect("dbname=filmz_app_test")
+connection = get_connection()
 
 @app.route("/", methods=["GET"])
 def get_endpoints():
