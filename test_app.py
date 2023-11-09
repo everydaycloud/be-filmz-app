@@ -212,6 +212,13 @@ def test_get_reviews_by_film_id_endpoint():
       "votes": 12
     }
 
+    # testing delete review by valid review ID endpoint
+def test_delete_review_by_review_id_endpoint():
+     relative_url = '/reviews/8'
+     url = ENDPOINT + relative_url
+     response=requests.get(url)
+     assert response.status_code == 204
+
     # testing get user by valid username endpoint
 def test_get_user_by_username_endpoint(seed_db):
         username = "billy"

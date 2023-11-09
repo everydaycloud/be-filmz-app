@@ -13,6 +13,7 @@ from endpoints.fetch_user_by_username import fetch_user_by_username
 from endpoints.get_tmbd_data import get_popular_films
 from endpoints.get_tmbd_data import search_for_films
 from endpoints.get_tmbd_data import get_film_by_film_id
+from endpoints.delete_review_by_review_id import delete_review
 
 import json
 
@@ -43,6 +44,11 @@ def get_films_by_film_id(film_id):
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_single_user(user_id):
        return get_user_by_user_id(user_id, connection)
+
+# DELETE a review by review_id
+@app.route('/reviews/<int:review_id>', methods=['DELETE'])
+def delete_review_by_review_id(review_id):
+    return delete_review(connection, review_id)
 
 # GET reviews by user_id
 @app.route('/users/<int:user_id>/reviews', methods=['GET'])

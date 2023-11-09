@@ -210,7 +210,7 @@ def seed_database():
         CREATE TABLE review_comments (
             review_comment_id SERIAL PRIMARY KEY,
             user_id INTEGER REFERENCES users(user_id),
-            review_id INTEGER REFERENCES reviews(review_id),
+            review_id INTEGER REFERENCES reviews(review_id) ON DELETE CASCADE,
             body TEXT,
             created_at DATE NOT NULL,
             votes INTEGER NOT NULL
