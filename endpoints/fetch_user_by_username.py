@@ -7,7 +7,11 @@ def fetch_user_by_username(connection):
   if username:
     with connection: 
       with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM users WHERE username =%s;",(username,))
+        cursor.execute("""
+                       SELECT * 
+                       FROM users 
+                       WHERE username = %s;
+                       """,(username,))
         user=cursor.fetchone()
         
         if user:
@@ -17,4 +21,6 @@ def fetch_user_by_username(connection):
                 'password': user[2],
                 'email': user[3]
             }
-            return jsonify(result)
+            return jsonify({'user': user}), 200
+        else: return {'message': 'User not found'}, 404
+  else: return {'message': 'User query required'}, 400
