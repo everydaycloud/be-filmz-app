@@ -4,8 +4,8 @@
     "description": "serves up a json representation of all the available endpoints of the api"
   },
   "GET /films": {
-    "description": "serves an array of all films",
-    "queries": [],
+    "description": "serves an array of all films by default, but takes an optional title query",
+    "queries": ["title"],
     "exampleResponse": {
       "films": [
         {

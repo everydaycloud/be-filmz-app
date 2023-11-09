@@ -30,7 +30,7 @@ def test_get_all_films_endpoint(seed_db):
     film_list = response.json()
     required_keys = [
         "id", 
-        "original_title", 
+        "title", 
         "overview", 
         "poster_path", 
         "release_date", 
@@ -41,6 +41,34 @@ def test_get_all_films_endpoint(seed_db):
         if all(key in film for key in required_keys):
             assert True
         else: assert False
+
+def test_get_film_by_title(seed_db):
+    relative_url = '/films?title=Harry'
+    url = ENDPOINT + relative_url
+    response=requests.get(url)
+    assert response.status_code == 200
+    film_list = response.json()
+    required_keys = [
+        "id", 
+        "title", 
+        "overview", 
+        "poster_path", 
+        "release_date", 
+        "vote_average", 
+        "vote_count"
+        ]
+    for film in film_list['films']:
+        if all(key in film for key in required_keys):
+            assert True
+        else: assert False
+
+def test_get_film_by_title_doesnt_exist(seed_db):
+    relative_url = '/films?title=NoFilms'
+    url = ENDPOINT + relative_url
+    response=requests.get(url)
+    assert response.status_code == 200
+    film_not_found = response.json()
+    assert film_not_found == {"message": "We couldn't find this film."}
 
 def test_get_films_by_film_id(seed_db):
     relative_url= ["/films/767"]
