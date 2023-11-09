@@ -1,7 +1,7 @@
 import requests
 from urllib.parse import urljoin
 import pytest
-from db.seeds.seed import seed_database
+from seed import seed_database
 
 ENDPOINT="http://127.0.0.1:5000"
 
