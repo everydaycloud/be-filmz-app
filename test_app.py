@@ -3,7 +3,6 @@ from urllib.parse import urljoin
 import pytest
 from db.seeds.seed import seed_database
 
-
 ENDPOINT="http://127.0.0.1:5000"
 
 # reseed after test 
@@ -12,7 +11,6 @@ ENDPOINT="http://127.0.0.1:5000"
 def seed_db():
     seed_database()
     yield
-
 
 def test_home_endpoint(seed_db):
     relative_url = ["/"]
@@ -96,7 +94,7 @@ def test_get_reviews_by_user_id_endpoint(seed_db):
     for review in returned_reviews:
         assert all(key in review for key in expected_review_structure)
 
-# testing get revies by specific user ID endpoint
+# testing get reviews by specific user ID endpoint
 def test_get_watchlist_by_user_id_endpoint(seed_db):
     relative_url = '/users/3/watchlist'
     url = ENDPOINT + relative_url
@@ -131,6 +129,21 @@ def test_add_new_user_endpoint(seed_db):
     user = response.json()
     required_keys = ["id", "username", "email", "password"]
     assert all(key in user for key in required_keys)
+
+# testing adding new friend
+def test_add_new_friend_endpoint(seed_db):
+    relative_url = '/users/1/friends'
+    url = ENDPOINT + relative_url
+    friend_data = {
+	    "friend_id": 5
+    }
+
+    response = requests.post(url, json=friend_data)
+    assert response.status_code == 200
+
+    result = response.json()
+    required_keys = ["message", "user1", "user2"]
+    assert all(key in result for key in required_keys)
 
  #Error tests (Need to be looked at later)       
 

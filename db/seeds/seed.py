@@ -1,7 +1,8 @@
 import json
 import psycopg2
-from db.seeds.config import config
+from db.config import load_db_config
 
+# function to seed database
 def seed_database():
 
     with open('./db/data/test-data/films.json', 'r') as json_file:
@@ -18,6 +19,37 @@ def seed_database():
 
     with open('./db/data/test-data/review_comments.json', 'r') as json_file:
         review_comments_data = json.load(json_file)
+
+    with open('./db/data/test-data/friendships.json', 'r') as json_file:
+        friendship_data = json.load(json_file)
+
+    friendship_values = []
+    for friendship in friendship_data:
+        friendship_values.append((
+            friendship['user1'],
+            friendship['user2']
+        ))
+
+    drop_friendships_table = """
+        DROP TABLE IF EXISTS friendships;
+    """
+
+    create_friendships_table = """
+        CREATE TABLE friendships (
+        friendship_id SERIAL PRIMARY KEY,
+        user_id INT REFERENCES users(user_id),
+        friend_id INT REFERENCES users(user_id),
+        created_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE (user_id, friend_id)
+        );
+    """
+
+    insert_friendships_data = """
+        INSERT INTO friendships 
+        (user_id, friend_id)
+        VALUES 
+        (%s, %s);
+    """
 
     user_values = []
     user_list = user_data['users'] 
@@ -191,10 +223,10 @@ def seed_database():
         VALUES 
         (%s, %s, %s, %s, %s);
     """
+    
     connection = None
     try:
-        params = config('./db/database.ini')
-        print(params, 'PARAMS')
+        params = load_db_config('./db/database.ini')
 
         connection = psycopg2.connect(**params)
         cursor = connection.cursor()
@@ -211,6 +243,10 @@ def seed_database():
         cursor.execute(drop_reviews_table)
         connection.commit()
 
+         # Delete the friendships table
+        cursor.execute(drop_friendships_table)
+        connection.commit()
+
         # Delete the films table
         cursor.execute(drop_films_table)
         connection.commit()
@@ -225,6 +261,10 @@ def seed_database():
 
         # Create the users table
         cursor.execute(create_users_table)
+        connection.commit()
+
+        # Create the friendships table
+        cursor.execute(create_friendships_table)
         connection.commit()
 
         # Create the watchlist table
@@ -245,6 +285,10 @@ def seed_database():
 
         # Insert data into the users table
         cursor.executemany(insert_user_data, user_values)
+        connection.commit()
+
+        # Insert data into the friendships table
+        cursor.executemany(insert_friendships_data, friendship_values)
         connection.commit()
 
         # Insert data into the watchlist table

@@ -8,5 +8,10 @@ def add_new_user(data, connection):
             with connection.cursor() as cursor:
                 cursor.execute(INSERT_USER_RETURN_ID, (username, password, email,))
                 new_user = cursor.fetchone()
-            return {"message": "New user created.", "id": new_user[0], "username": username, 
-                    "password": password, "email": email}
+        return {
+             "message": "New user created.", 
+             "id": new_user[0], 
+             "username": username, 
+             "password": password, 
+             "email": email
+            }
