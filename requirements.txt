@@ -7,5 +7,5 @@ pytest
 requests
 asyncio
 asyncpg
-configparsers
+configparser
 Gunicorn
