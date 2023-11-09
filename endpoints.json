@@ -69,5 +69,24 @@
         "username": "bigfilmfreakz"
       }
       
+  },
+  "GET /users/:user_id/friends": {
+    "description": "serves an array of all friends by user id",
+    "queries": [],
+    "exampleResponse": 
+      [
+        {
+          "friend_id": 1,
+          "friend_name": "yahya",
+          "friends_since": "Thu, 09 Nov 2023 15:31:24 GMT",
+          "my_id": 4
+        },
+        {
+          "friend_id": 3,
+          "friend_name": "luke",
+          "friends_since": "Thu, 09 Nov 2023 15:31:24 GMT",
+          "my_id": 4
+        }]
+    
   }
 }
