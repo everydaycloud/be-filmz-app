@@ -179,7 +179,7 @@ def seed_database():
             user_id INTEGER REFERENCES users(user_id),
             film_id INTEGER REFERENCES films(id),
             body TEXT,
-            rating INTEGER NOT NULL,
+            rating INTEGER,
             votes INTEGER NOT NULL,
             created_at DATE NOT NULL
         );

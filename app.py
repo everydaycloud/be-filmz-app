@@ -10,6 +10,10 @@ from endpoints.get_user_by_user_id import get_user_by_user_id
 from endpoints.get_watchlist_by_user_id import get_watchlist_by_user_id
 from endpoints.add_new_friend import add_new_friend
 from endpoints.fetch_user_by_username import fetch_user_by_username
+from endpoints.get_tmbd_data import get_popular_films
+from endpoints.get_tmbd_data import search_for_films
+from endpoints.get_tmbd_data import get_film_by_film_id
+
 import json
 
 load_dotenv()
@@ -72,6 +76,18 @@ def add_friend(user_id):
     data = request.get_json()
     result = (add_new_friend(data, connection, user_id))
     return jsonify(result)
+
+@app.route("/tmdb/films/popular", methods=["GET"])
+def get_tmdb_popular():
+    return get_popular_films()
+
+@app.route("/tmdb/films/<film>", methods=["GET"])
+def get_tmdb_search(film):
+    return search_for_films(film)
+
+@app.route("/tmdb/films/<int:film_id>", methods=["GET"])
+def get_tmdb_film(film_id):
+    return get_film_by_film_id(film_id)
    
 # @app.route("/*")
 
