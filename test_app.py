@@ -183,3 +183,38 @@ def test_get_reviews_by_film_id_endpoint():
       "user_id": 5,
       "votes": 12
     }
+
+    # testing get user by valid username endpoint
+def test_get_user_by_username_endpoint(seed_db):
+        username = "billy"
+        relative_url = f'/users?username={username}'
+        url = ENDPOINT + relative_url
+        response=requests.get(url)
+        assert response.status_code == 200
+        user_data = response.json()
+        print(user_data['user'], "LOG OF THING")
+        assert user_data['user'][1] == username
+        assert user_data['user'] == [
+                                        2,
+                                        "billy",
+                                        "GOAT",
+                                        "billy@yahrmyarmy.com"
+                                    ]
+    #testing get user by invalid username endpoint
+def test_get_incorrect_user_by_username_endpoint(seed_db):
+        username = "billyyy"
+        relative_url = '/users?username=billyyy'
+        url = ENDPOINT + relative_url
+        response=requests.get(url)
+        assert response.status_code == 404
+        response_text = response.json()
+        assert response_text['message'] == 'User not found'
+
+    #testing get user without providing username query
+def test_get_no_user_by_username_endpoint(seed_db):
+        relative_url = '/users'
+        url = ENDPOINT + relative_url
+        response=requests.get(url)
+        assert response.status_code == 400
+        response_text = response.json()
+        assert response_text['message'] == 'User query required'
