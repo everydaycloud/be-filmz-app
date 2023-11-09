@@ -5,7 +5,11 @@ from db.config import load_db_config
 db_config = load_db_config()
 
 # Create a database connection pool
-_pool = pool.Pool(db_config)
+_pool = pool.SimpleConnectionPool(
+    minconn=1,
+    maxconn=10,
+    **db_config
+)
 
 def get_connection():
     # Get a connection from the pool
