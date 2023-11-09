@@ -9,6 +9,7 @@ from endpoints.get_reviews_by_film_id import fetch_reviews_by_film_id
 from endpoints.get_user_by_user_id import get_user_by_user_id
 from endpoints.get_watchlist_by_user_id import get_watchlist_by_user_id
 from endpoints.add_new_friend import add_new_friend
+from endpoints.fetch_user_by_username import fetch_user_by_username
 import json
 
 load_dotenv()
@@ -59,6 +60,11 @@ def post_new_user():
     data = request.get_json()
     result = add_new_user(data, connection)
     return jsonify(result)
+
+# GET username by username (query)
+@app.route("/users", methods=["GET"])
+def get_user_by_username():
+    return fetch_user_by_username(connection)
 
 # POST new friend to friends table 
 @app.route("/users/<int:user_id>/friends", methods=["POST"])
