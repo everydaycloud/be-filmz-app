@@ -1,5 +1,3 @@
-#imports
-
 from db.connection import get_connection
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
