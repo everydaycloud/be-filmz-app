@@ -16,6 +16,7 @@ from endpoints.get_tmbd_data import get_film_by_film_id
 from endpoints.get_friends_by_user_id import fetch_friends_by_user_id
 from endpoints.remove_friends_by_friend_id import remove_friends_by_friend_id
 from endpoints.remove_user_by_user_id import remove_user_by_user_id
+from endpoints.remove_review_by_id import remove_review_by_id
 
 import json
 
@@ -23,7 +24,6 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# url = os.environ.get("dbname=filmz_app_test") # Might tweak later to test/local database
 connection = get_connection()
 
 # GET all endpoints
@@ -109,3 +109,9 @@ def delete_friends_by_friend_id(user_id, friend_id):
 @cross_origin() 
 def delete_user_by_user_id(user_id):
     return remove_user_by_user_id(user_id, connection)
+
+@app.route("/reviews/<int:review_id>", methods=["DELETE"])
+@cross_origin() 
+def delete_review_by_id(review_id):
+    return remove_review_by_id(review_id, connection)
+

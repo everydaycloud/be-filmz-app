@@ -286,3 +286,10 @@ def test_delete_user_by_user_id(seed_db):
         response = requests.delete(url)
         assert response.status_code == 200
         assert response.json() == {"message": "User (5, 'barbara', 'fish', 'barbara@yahrmyarmy.com') deleted successfully"}        
+
+def test_delete_review_by_id(seed_db):
+        relative_url = '/reviews/7'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 200
+        assert response.json() == {"message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13)) deleted successfully"}
