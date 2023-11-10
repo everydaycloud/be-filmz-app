@@ -14,7 +14,7 @@ def load_db_config(filename='database.ini', section='postgresql'):
 
     db_config = {}
 
-    print(filepath)
+    print(filepath, "filepath")
 
     db_url = os.getenv('DATABASE_URL')
     if db_url:
