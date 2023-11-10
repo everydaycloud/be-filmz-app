@@ -22,6 +22,7 @@ from endpoints.remove_review_by_id import remove_review_by_id
 
 import json
 
+
 load_dotenv()
 
 app = Flask(__name__)
