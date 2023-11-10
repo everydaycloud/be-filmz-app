@@ -18,6 +18,7 @@ from endpoints.remove_friends_by_friend_id import remove_friends_by_friend_id
 
 import json
 
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -40,7 +41,7 @@ def get_all_films():
 
 # GET a film by film_id
 @app.route("/films/<film_id>", methods=["GET"])
-def get_films_by_film_id(film_id):
+def get_films_by_film_id(film_id):    
     result = fetch_films_by_film_id(connection, film_id)
     return result
 
@@ -103,11 +104,7 @@ def get_friends_by_user_id(user_id):
 def delete_friends_by_friend_id(user_id, friend_id):
     return remove_friends_by_friend_id(user_id, friend_id, connection)
 
-
-   
-# @app.route("/*")
-
-# Error endpoint attempt (Not necessary for the current test to pass)
-# @app.route('/<path:other>')
-# def other_path(other):
-#     return f'Error 404: "{other}" is an invalid path'
+#Any other path
+@app.route('/<path:other>')
+def other_path(other):
+    return {"message": f"{other} is not a valid path!"},404
