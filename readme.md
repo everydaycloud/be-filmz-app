@@ -2,6 +2,8 @@
 
 This API serves up information about films, user reviews and user comments, allows the users to add friends, reviews and films to their watchlist and more. It's a base for an app for films lovers who would like to keep track of what they have watched, review it and comment on their friends' reviews and share their passion for film with others. 
 
+The live API can be accessed here: https://be-filmz-app.onrender.com
+
 ***Setup instructions (fork and clone the repo first):***
 
 1. Make sure that you have Python3 installed on your machine.
