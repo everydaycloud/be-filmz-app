@@ -1,6 +1,8 @@
 from db.connection import get_connection
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
+
 from endpoints.fetch_all_films import fetch_all_films
 from endpoints.fetch_films_by_film_id import fetch_films_by_film_id
 from endpoints.add_user import add_new_user
@@ -20,6 +22,7 @@ import json
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 
 # url = os.environ.get("dbname=filmz_app_test") # Might tweak later to test/local database
 connection = get_connection()
@@ -79,14 +82,17 @@ def add_friend(user_id):
     return jsonify(result)
 
 @app.route("/tmdb/films/popular", methods=["GET"])
+@cross_origin()
 def get_tmdb_popular():
     return get_popular_films()
 
 @app.route("/tmdb/films/<film>", methods=["GET"])
+@cross_origin()
 def get_tmdb_search(film):
     return search_for_films(film)
 
 @app.route("/tmdb/films/<int:film_id>", methods=["GET"])
+@cross_origin()
 def get_tmdb_film(film_id):
     return get_film_by_film_id(film_id)
 
