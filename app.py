@@ -20,6 +20,7 @@ from endpoints.remove_review_by_id import remove_review_by_id
 
 import json
 
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -41,7 +42,7 @@ def get_all_films():
 
 # GET a film by film_id
 @app.route("/films/<film_id>", methods=["GET"])
-def get_films_by_film_id(film_id):
+def get_films_by_film_id(film_id):    
     result = fetch_films_by_film_id(connection, film_id)
     return result
 
@@ -104,6 +105,12 @@ def get_friends_by_user_id(user_id):
 @cross_origin() 
 def delete_friends_by_friend_id(user_id, friend_id):
     return remove_friends_by_friend_id(user_id, friend_id, connection)
+
+#Any other path
+@app.route('/<path:other>')
+@cross_origin()
+def other_path(other):
+    return {"message": f"{other} is not a valid path!"},404
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
 @cross_origin() 

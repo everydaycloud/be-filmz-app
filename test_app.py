@@ -69,6 +69,7 @@ def test_get_film_by_title_doesnt_exist(seed_db):
     film_not_found = response.json()
     assert film_not_found == {"message": "We couldn't find this film."}
 
+#testing get films by film id endpoint
 def test_get_films_by_film_id(seed_db):
     relative_url= ["/films/767"]
     for rel_url in relative_url:
@@ -81,7 +82,29 @@ def test_get_films_by_film_id(seed_db):
     if all(key in film for key in required_keys):
             assert True
     else: assert False
-        
+
+#testing invalid film id number
+def test_get_films_by_film_id_invalid_id(seed_db):
+    relative_url= ["/films/1"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 404
+    response_text = response.json()
+    assert response_text['message'] == "This film doesn't exist!"
+
+#testing invalid input (not a number) for film id
+def test_get_films_by_film_id_invalid_input(seed_db):
+    relative_url= ["/films/cheese"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 400
+    response_text = response.json()
+    assert response_text['message'] == "Invalid ID!"
+      
 # testing get user by specific ID endpoint
 def test_get_user_by_id_endpoint(seed_db):
     relative_url = '/users/1'
@@ -96,6 +119,28 @@ def test_get_user_by_id_endpoint(seed_db):
 			"user_id": 1,
 			"username": "yahya"
 		}
+    
+#testing invalid user id number
+def test_get_users_by_user_id_invalid_id(seed_db):
+    relative_url= ["/users/999"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 404
+    response_text = response.json()
+    assert response_text['message'] == "This user doesn't exist!"
+
+#testing invalid input (not a number) for user id
+def test_get_users_by_user_id_errors(seed_db):
+    relative_url= ["/users/cheese"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 400
+    response_text = response.json()
+    assert response_text['message'] == "Invalid ID!"
 
 # testing get revies by specific user ID endpoint
 def test_get_reviews_by_user_id_endpoint(seed_db):
@@ -121,6 +166,28 @@ def test_get_reviews_by_user_id_endpoint(seed_db):
     for review in returned_reviews:
         assert all(key in review for key in expected_review_structure)
 
+#testing invalid user id number (get reviews)
+def test_get_reviews_by_user_id_invalid_id(seed_db):
+    relative_url= ["/users/999/reviews"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 404
+    response_text = response.json()
+    assert response_text['message'] == "This user doesn't exist!"
+
+#testing invalid input (not a number) for user id (get reviews)
+def test_get_reviews_by_user_id_errors(seed_db):
+    relative_url= ["/users/cheese/reviews"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 400
+    response_text = response.json()
+    assert response_text['message'] == "Invalid ID!"
+
 # testing get reviews by specific user ID endpoint
 def test_get_watchlist_by_user_id_endpoint(seed_db):
     relative_url = '/users/3/watchlist'
@@ -140,6 +207,28 @@ def test_get_watchlist_by_user_id_endpoint(seed_db):
     }
     for item in returned_watchlist:
         assert set(item.keys()) == expected_keys
+
+#testing invalid user id number (get watchlist)
+def test_get_watchlist_by_user_id_invalid_id(seed_db):
+    relative_url= ["/users/999/watchlist"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 404
+    response_text = response.json()
+    assert response_text['message'] == "This user doesn't exist!"
+
+#testing invalid input (not a number) for user id (get watchlist)
+def test_get_watchlist_by_user_id_errors(seed_db):
+    relative_url= ["/users/cheese/watchlist"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 400
+    response_text = response.json()
+    assert response_text['message'] == "Invalid ID!"
 
 def test_add_new_user_endpoint(seed_db):
     relative_url = '/users'
@@ -172,8 +261,7 @@ def test_add_new_friend_endpoint(seed_db):
     required_keys = ["message", "user1", "user2"]
     assert all(key in result for key in required_keys)
 
- #Error tests (Need to be looked at later)       
-
+#Generic 404 error handler
 def test_invalid_path(seed_db):
     relative_url = ['/cheese']
     for rel_url in relative_url:
@@ -181,8 +269,8 @@ def test_invalid_path(seed_db):
 
     response = requests.get(url)
     assert response.status_code == 404
-    assert response.reason == "NOT FOUND"
- 
+    response_text = response.json()
+    assert response_text["message"]=="cheese is not a valid path!"
  
 # testing get reviews by specific ID endpoint
 def test_get_reviews_by_film_id_endpoint():
