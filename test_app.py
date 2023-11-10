@@ -280,4 +280,9 @@ def test_delete_friends_by_friend_id_no_friends(seed_db):
         assert response.status_code == 200
         assert response.json() == {'message': 'Friendship not found'}
 
-        
+def test_delete_user_by_user_id(seed_db):
+        relative_url = '/users/5'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 200
+        assert response.json() == {"message": "User (5, 'barbara', 'fish', 'barbara@yahrmyarmy.com') deleted successfully"}        

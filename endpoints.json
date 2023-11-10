@@ -94,5 +94,11 @@
     "queries": [],
     "exampleResponse": 
       {"message": "Friendship deleted successfully"}
+  },
+  "DELETE /users/:user_id": {
+    "description": "removes a user",
+    "queries": [],
+    "exampleResponse": 
+    {"message": "User (5, 'barbara', 'fish', 'barbara@yahrmyarmy.com') deleted successfully"}
   }
 }

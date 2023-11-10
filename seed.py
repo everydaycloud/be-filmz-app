@@ -1,5 +1,4 @@
 import json
-from db.config import load_db_config
 from db.connection import get_connection
 
 # Function to seed database
@@ -37,8 +36,8 @@ def seed_database():
     create_friendships_table = """
         CREATE TABLE friendships (
         friendship_id SERIAL PRIMARY KEY,
-        user_id INT REFERENCES users(user_id),
-        friend_id INT REFERENCES users(user_id),
+        user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+        friend_id INT REFERENCES users(user_id) ON DELETE CASCADE,
         created_at TIMESTAMP DEFAULT NOW(),
         UNIQUE (user_id, friend_id)
         );
@@ -154,7 +153,7 @@ def seed_database():
 
     create_watchlist_table = """
         CREATE TABLE watchlist (
-            user_id INT REFERENCES users(user_id),
+            user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
             film_id INT REFERENCES films(id),
             is_watched BOOLEAN DEFAULT FALSE,
             created_at TIMESTAMP DEFAULT NOW(),
@@ -176,7 +175,7 @@ def seed_database():
     create_reviews_table = """
         CREATE TABLE reviews (
             review_id SERIAL PRIMARY KEY,
-            user_id INTEGER REFERENCES users(user_id),
+            user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
             film_id INTEGER REFERENCES films(id),
             body TEXT,
             rating INTEGER,
@@ -209,8 +208,8 @@ def seed_database():
     create_review_comments_table = """
         CREATE TABLE review_comments (
             review_comment_id SERIAL PRIMARY KEY,
-            user_id INTEGER REFERENCES users(user_id),
-            review_id INTEGER REFERENCES reviews(review_id),
+            user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+            review_id INTEGER REFERENCES reviews(review_id) ON DELETE CASCADE,
             body TEXT,
             created_at DATE NOT NULL,
             votes INTEGER NOT NULL

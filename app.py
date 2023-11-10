@@ -17,6 +17,7 @@ from endpoints.get_tmbd_data import search_for_films
 from endpoints.get_tmbd_data import get_film_by_film_id
 from endpoints.get_friends_by_user_id import fetch_friends_by_user_id
 from endpoints.remove_friends_by_friend_id import remove_friends_by_friend_id
+from endpoints.remove_user_by_user_id import remove_user_by_user_id
 
 import json
 
@@ -113,14 +114,11 @@ def get_friends_by_user_id(user_id):
     return fetch_friends_by_user_id(user_id, connection)
 
 @app.route("/users/<int:user_id>/friends/<friend_id>", methods=["DELETE"])
+@cross_origin() 
 def delete_friends_by_friend_id(user_id, friend_id):
     return remove_friends_by_friend_id(user_id, friend_id, connection)
 
-
-   
-# @app.route("/*")
-
-# Error endpoint attempt (Not necessary for the current test to pass)
-# @app.route('/<path:other>')
-# def other_path(other):
-#     return f'Error 404: "{other}" is an invalid path'
+@app.route("/users/<int:user_id>", methods=["DELETE"])
+@cross_origin() 
+def delete_user_by_user_id(user_id):
+    return remove_user_by_user_id(user_id, connection)
