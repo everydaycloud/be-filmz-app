@@ -15,6 +15,8 @@ from endpoints.get_tmbd_data import search_for_films
 from endpoints.get_tmbd_data import get_film_by_film_id
 from endpoints.get_friends_by_user_id import fetch_friends_by_user_id
 from endpoints.remove_friends_by_friend_id import remove_friends_by_friend_id
+from endpoints.remove_user_by_user_id import remove_user_by_user_id
+from endpoints.remove_review_by_id import remove_review_by_id
 
 import json
 
@@ -23,7 +25,6 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# url = os.environ.get("dbname=filmz_app_test") # Might tweak later to test/local database
 connection = get_connection()
 
 # GET all endpoints
@@ -101,10 +102,23 @@ def get_friends_by_user_id(user_id):
     return fetch_friends_by_user_id(user_id, connection)
 
 @app.route("/users/<int:user_id>/friends/<friend_id>", methods=["DELETE"])
+@cross_origin() 
 def delete_friends_by_friend_id(user_id, friend_id):
     return remove_friends_by_friend_id(user_id, friend_id, connection)
 
 #Any other path
 @app.route('/<path:other>')
+@cross_origin()
 def other_path(other):
     return {"message": f"{other} is not a valid path!"},404
+
+@app.route("/users/<int:user_id>", methods=["DELETE"])
+@cross_origin() 
+def delete_user_by_user_id(user_id):
+    return remove_user_by_user_id(user_id, connection)
+
+@app.route("/reviews/<int:review_id>", methods=["DELETE"])
+@cross_origin() 
+def delete_review_by_id(review_id):
+    return remove_review_by_id(review_id, connection)
+
