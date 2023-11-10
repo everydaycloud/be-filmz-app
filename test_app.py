@@ -5,7 +5,6 @@ from seed import seed_database
 
 ENDPOINT="http://127.0.0.1:5000"
 
-# Reseed after test 
 
 @pytest.fixture(autouse=True)
 def seed_db():
@@ -263,3 +262,22 @@ def test_fetch_friends_by_user_id_no_friends(seed_db):
         assert response.status_code == 200
         assert response.json() == {"message": "You have no friends!"}
 
+#200 is a normal status code for a successful delete request 
+#(or any request really)
+#if we are returning a message back to the user
+
+def test_delete_friends_by_friend_id(seed_db):
+        relative_url = '/users/2/friends/1'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 200
+        assert response.json() == {'message': 'Friendship deleted successfully'}
+
+def test_delete_friends_by_friend_id_no_friends(seed_db):
+        relative_url = '/users/6/friends/1'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 200
+        assert response.json() == {'message': 'Friendship not found'}
+
+        
