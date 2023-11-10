@@ -100,5 +100,13 @@
     "queries": [],
     "exampleResponse": 
     {"message": "User (5, 'barbara', 'fish', 'barbara@yahrmyarmy.com') deleted successfully"}
+  },
+  "DELETE /reviews/:review_id": {
+    "description": "removes a review",
+    "queries": [],
+    "exampleResponse": 
+    {
+      "message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13)) deleted successfully"
+    }
   }
 }
