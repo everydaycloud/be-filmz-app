@@ -122,11 +122,13 @@ def get_friends_by_user_id(user_id):
 def delete_friends_by_friend_id(user_id, friend_id):
     return remove_friends_by_friend_id(user_id, friend_id, connection)
 
+# DELETE user by id 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
 @cross_origin() 
 def delete_user_by_user_id(user_id):
     return remove_user_by_user_id(user_id, connection)
 
+# DELETE review by id
 @app.route("/reviews/<int:review_id>", methods=["DELETE"])
 @cross_origin() 
 def delete_review_by_id(review_id):
