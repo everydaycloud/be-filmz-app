@@ -246,3 +246,21 @@ def test_get_no_user_by_username_endpoint(seed_db):
         assert response.status_code == 400
         response_text = response.json()
         assert response_text['message'] == 'User query required'
+
+    #testing (POST) adding new entry to watchlist
+def test_add_new_user_endpoint(seed_db):
+    user_id = 5
+    relative_url = f'/users/5/watchlist'
+    url = ENDPOINT + relative_url
+    film_data = {
+                "film_id":672
+                }
+
+    response = requests.post(url, json=film_data)
+    assert response.status_code == 200
+
+
+    result = response.json()
+    required_keys = ["message", "created_at", "film_id", "is_watched", "user_id"]
+    assert all(key in result for key in required_keys)
+    

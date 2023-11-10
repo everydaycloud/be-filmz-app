@@ -13,6 +13,7 @@ from endpoints.fetch_user_by_username import fetch_user_by_username
 from endpoints.get_tmbd_data import get_popular_films
 from endpoints.get_tmbd_data import search_for_films
 from endpoints.get_tmbd_data import get_film_by_film_id
+from endpoints.add_new_watchlist_entry import add_new_entry
 
 import json
 
@@ -75,6 +76,13 @@ def get_user_by_username():
 def add_friend(user_id):
     data = request.get_json()
     result = (add_new_friend(data, connection, user_id))
+    return jsonify(result)
+
+# POST new entry to watchlist ///NEW THING YAHYA
+@app.route("/users/<int:user_id>/watchlist", methods=["POST"])
+def add_watchlist_entry(user_id):
+    data = request.get_json()
+    result = (add_new_entry(data, connection, user_id))
     return jsonify(result)
 
 @app.route("/tmdb/films/popular", methods=["GET"])
