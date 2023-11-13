@@ -181,6 +181,18 @@
   "description": "posts a new friends object to a user's friend table. User is selected by user id",
   "queries":[]
 },
+"POST /users/<user_id>/watchlist":{
+  "description": "posts a new film object to a user's profile by user id, returning a watchlist object",
+  "queries":[],
+  "exampleRequest":{"film_id": 674},
+  "exampleResponse":{
+    "created_at": "Mon, 13 Nov 2023 16:31:55 GMT",
+    "film_id": 674,
+    "is_watched": false,
+    "message": "New entry added",
+    "user_id": 1
+  }
+},
 "GET /tmdb/films/popular":{
   "description": "serves an array of popular film objects from the external tmdb API",
   "exampleResponse":

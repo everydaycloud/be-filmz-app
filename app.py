@@ -98,8 +98,8 @@ def add_friend(user_id):
     result = (add_new_friend(data, connection, user_id))
     return jsonify(result)
 
-# POST new entry to watchlist ///NEW THING YAHYA
-@app.route("/users/<int:user_id>/watchlist", methods=["POST"])
+# POST new entry to watchlist
+@app.route("/users/<user_id>/watchlist", methods=["POST"])
 def add_watchlist_entry(user_id):
     data = request.get_json()
     result = (add_new_entry(data, connection, user_id))
