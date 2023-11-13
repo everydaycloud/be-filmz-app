@@ -230,6 +230,7 @@ def test_get_watchlist_by_user_id_errors(seed_db):
     response_text = response.json()
     assert response_text['message'] == "Invalid ID!"
 
+# testing adding new user
 def test_add_new_user_endpoint(seed_db):
     relative_url = '/users'
     url = ENDPOINT + relative_url
@@ -299,6 +300,28 @@ def test_get_reviews_by_film_id_endpoint():
       "votes": 12
     }
 
+#testing invalid id number (get reviews by film id)
+def test_get_reviews_by_film_id_invalid_id(seed_db):
+    relative_url= ["/films/1/reviews"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 404
+    response_text = response.json()
+    assert response_text['message'] == "This film doesn't exist!"
+
+#testing invalid input (not a number)(get reviews by film id)
+def test_get_reviews_by_film_id_errors(seed_db):
+    relative_url= ["/films/cheese/reviews"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 400
+    response_text = response.json()
+    assert response_text['message'] == "Invalid ID!"
+
     # testing get user by valid username endpoint
 def test_get_user_by_username_endpoint(seed_db):
         username = "billy"
@@ -315,7 +338,7 @@ def test_get_user_by_username_endpoint(seed_db):
                                         "GOAT",
                                         "billy@yahrmyarmy.com"
                                     ]
-    #testing get user by invalid username endpoint
+#testing get user by invalid username endpoint
 def test_get_incorrect_user_by_username_endpoint(seed_db):
         username = "billyyy"
         relative_url = '/users?username=billyyy'
@@ -325,7 +348,7 @@ def test_get_incorrect_user_by_username_endpoint(seed_db):
         response_text = response.json()
         assert response_text['message'] == 'User not found'
 
-    #testing get user without providing username query
+#testing get user without providing username query
 def test_get_no_user_by_username_endpoint(seed_db):
         relative_url = '/users'
         url = ENDPOINT + relative_url
@@ -334,6 +357,7 @@ def test_get_no_user_by_username_endpoint(seed_db):
         response_text = response.json()
         assert response_text['message'] == 'User query required'
 
+#testing get friends by user id
 def test_fetch_friends_by_user_id(seed_db):
         relative_url = '/users/2/friends'
         url = ENDPOINT + relative_url
@@ -343,12 +367,35 @@ def test_fetch_friends_by_user_id(seed_db):
         if all(key in response for key in required_keys):
             assert True
 
+#testing get friends by user id (no friends)
 def test_fetch_friends_by_user_id_no_friends(seed_db):
         relative_url = '/users/6/friends'
         url = ENDPOINT + relative_url
         response=requests.get(url)
         assert response.status_code == 200
         assert response.json() == {"message": "You have no friends!"}
+
+#testing invalid user id number (get friends by user id)
+def test_get_friends_by_user_id_invalid_id(seed_db):
+    relative_url= ["/users/999999/friends"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 404
+    response_text = response.json()
+    assert response_text['message'] == "This user doesn't exist!"
+
+#testing invalid input (not a number)(get friends by user id)
+def test_get_friends_by_user_id_errors(seed_db):
+    relative_url= ["/users/cheese/friends"]
+    for rel_url in relative_url:
+        url = urljoin(ENDPOINT, rel_url)
+
+    response = requests.get(url)
+    assert response.status_code == 400
+    response_text = response.json()
+    assert response_text['message'] == "Invalid ID!"
 
 #200 is a normal status code for a successful delete request 
 #(or any request really)
