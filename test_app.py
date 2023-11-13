@@ -337,6 +337,7 @@ def test_get_no_user_by_username_endpoint(seed_db):
         response_text = response.json()
         assert response_text['message'] == 'User query required'
 
+
 def test_fetch_friends_by_user_id(seed_db):
         relative_url = '/users/2/friends'
         url = ENDPOINT + relative_url
@@ -384,3 +385,42 @@ def test_delete_review_by_id(seed_db):
         response = requests.delete(url)
         assert response.status_code == 200
         assert response.json() == {"message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13)) deleted successfully"}
+        
+        #testing (POST) adding new entry to watchlist
+    #happy path
+def test_add_new_user_endpoint(seed_db):
+    user_id = 5
+    relative_url = f'/users/5/watchlist'
+    url = ENDPOINT + relative_url
+    film_data = {
+                "film_id":672
+                }
+
+    response = requests.post(url, json=film_data)
+    assert response.status_code == 200
+
+
+    result = response.json()
+    required_keys = ["message", "created_at", "film_id", "is_watched", "user_id"]
+    assert all(key in result for key in required_keys)
+    
+    #if film id = none
+def test_add_to_watchlist_with_no_film_id(seed_db):
+     relative_url = f'/users/6/watchlist'
+     url = ENDPOINT + relative_url
+     postObject = {"film_id": None}
+     response = requests.post(url, json=postObject)
+     assert response.status_code == 200
+     response_text = response.json()
+
+     assert 'message' in response_text
+     assert response_text['message'] == 'film_id is required'
+
+     #if film has already been added
+def test_add_duplicate_film_to_watchlist_endpoint(seed_db):
+     relative_url = '/users/6/watchlist'
+     url = ENDPOINT + relative_url
+     postObject = {"film_id": 672}
+     response = requests.post(url, json=postObject)
+     response = requests.post(url, json=postObject)
+     assert response.status_code == 409
