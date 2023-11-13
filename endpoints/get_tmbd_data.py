@@ -8,18 +8,21 @@ load_dotenv()
 api_key = os.getenv("API_KEY")
 api_token = os.getenv('API_TOKEN')
 
+
 headers = {
     "accept": "application/json",
     "Authorization": f"Bearer {api_token}"
 }
 
 def get_popular_films():
+
     base_url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1"
     response = requests.get(base_url, headers=headers)
 
     if response.status_code == 200:
         data = response.json()
-        return(data['results'])
+        return (data['results'])
+         
     else:
         print(f"Error: {response.status_code} - {response.text}")
         return {'error': {response.status_code}, 'msg': {response.text}}

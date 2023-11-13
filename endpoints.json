@@ -1,7 +1,6 @@
-
 {
   "GET /": {
-    "description": "serves up a json representation of all the available endpoints of the api"
+    "description": "serves up a json representation of all the available endpoints of the API"
   },
   "GET /films": {
     "description": "serves an array of all films by default, but takes an optional title query",
@@ -34,25 +33,6 @@
       "vote_count": 18235
     }
   },
-    "GET /": {
-      "description": "serves up a json representation of all the available endpoints of the api"
-    },
-    "GET /films": {
-      "description": "serves an array of all films",
-      "queries": [],
-      "exampleResponse": {
-        "films": [
-          {
-            "id": 671,
-            "original_title": "Harry Potter and the Philosopher's Stone",
-            "overview": "Harry Potter has lived under the stairs at his aunt and uncle's house his whole life. But on his 11th birthday, he learns he's a powerful wizard\u2014with a place waiting for him at the Hogwarts School of Witchcraft and Wizardry. As he learns to harness his newfound powers with the help of the school's kindly headmaster, Harry uncovers the truth about his parents' deaths\u2014and about the villain who's to blame.",
-            "poster_path": "/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg",
-            "release_date": "Fri, 16 Nov 2001 00:00:00 GMT",
-            "vote_average": "7.915",
-            "vote_count": 25554
-          }]
-      }
-    },
     "POST /users": {
       "description": "adds new user returning an object of the added user",
       "queries": {
@@ -69,5 +49,228 @@
         "username": "bigfilmfreakz"
       }
       
+  },
+  "GET /users/<user_id>/friends": {
+    "description": "serves an array of all friends by user id",
+    "queries": [],
+    "exampleResponse": 
+      [
+        {
+          "friend_id": 1,
+          "friend_name": "yahya",
+          "friends_since": "Thu, 09 Nov 2023 15:31:24 GMT",
+          "my_id": 4
+        },
+        {
+          "friend_id": 3,
+          "friend_name": "luke",
+          "friends_since": "Thu, 09 Nov 2023 15:31:24 GMT",
+          "my_id": 4
+        }]
+  },
+"GET /users/<user_id>":{
+  "description": "serves a user object by user id",
+  "queries":["?username=", "<<<Replaces '<user_id>' to search for user by username"],
+  "exampleResponse": 
+  {
+    "user": [
+      {
+        "email": "yahya@yahrmyarmy.com",
+        "password": "pyramids",
+        "user_id": 1,
+        "username": "yahya"
+      }
+    ]
+    
+  },
+  "DELETE /users/:user_id/friends/:friend_id": {
+    "description": "removes a friend from a user's friend list",
+    "queries": [],
+    "exampleResponse": 
+      {"message": "Friendship deleted successfully"}
+  },
+  "DELETE /users/:user_id": {
+    "description": "removes a user",
+    "queries": [],
+    "exampleResponse": 
+    {"message": "User (5, 'barbara', 'fish', 'barbara@yahrmyarmy.com') deleted successfully"}
+  },
+  "DELETE /reviews/:review_id": {
+    "description": "removes a review",
+    "queries": [],
+    "exampleResponse": 
+    {
+      "message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13)) deleted successfully"
+    }
   }
+},
+"GET /users/<user_id>/reviews":{
+  "description": "serves an array of review objects by user of user id",
+  "queries":[],
+  "exampleResponse":
+  {
+    "reviews": [
+      {
+        "body": "This movie is pure magic!",
+        "created_at": "Tue, 07 Nov 2023 00:00:00 GMT",
+        "email": "yahya@yahrmyarmy.com",
+        "film_id": 671,
+        "password": "pyramids",
+        "rating": 5,
+        "review_id": 1,
+        "user_id": 1,
+        "username": "yahya",
+        "votes": 10
+      }
+    ]
+  }
+},
+"GET /films/<film_id>/reviews":{
+  "description":"serves an array of review objects for a film by film id",
+  "queries":[],
+  "exampleResponse":
+  {
+    "reviews": [
+      {
+        "body": "This movie is pure magic!",
+        "created_at": "Tue, 07 Nov 2023 00:00:00 GMT",
+        "film_id": 671,
+        "rating": 5,
+        "review_id": 1,
+        "user_id": 1,
+        "votes": 10
+      },
+      {
+        "body": "The magic of the first movie is unforgettable!",
+        "created_at": "Sun, 12 Nov 2023 00:00:00 GMT",
+        "film_id": 671,
+        "rating": 5,
+        "review_id": 6,
+        "user_id": 5,
+        "votes": 12
+      }
+    ]
+  }
+},
+"GET /users/<user_id>/watchlist":{
+  "description":"serves an array of film objects, which is the watchlist of the user of a user id",
+  "queries":[],
+  "exampleResponse":
+  {
+    "watchlist": [
+      {
+        "backdrop_path": "/hziiv14OpD73u9gAak4XDDfBKa2.jpg",
+        "created_at": "Thu, 09 Nov 2023 16:53:21 GMT",
+        "film_id": 671,
+        "is_watched": false,
+        "title": "Harry Potter and the Philosopher's Stone",
+        "vote_average": "7.915"
+      },
+      {
+        "backdrop_path": "/1stUIsjawROZxjiCMtqqXqgfZWC.jpg",
+        "created_at": "Thu, 09 Nov 2023 16:53:21 GMT",
+        "film_id": 672,
+        "is_watched": false,
+        "title": "Harry Potter and the Chamber of Secrets",
+        "vote_average": "7.719"
+      }
+    ]
+  }
+},
+"POST /users/<user_id>/friends":{
+  "description": "posts a new friends object to a user's friend table. User is selected by user id",
+  "queries":[]
+},
+"GET /tmdb/films/popular":{
+  "description": "serves an array of popular film objects from the external tmdb API",
+  "exampleResponse":
+  [
+{
+"adult": false,
+"backdrop_path": "/628Dep6AxEtDxjZoGP78TsOxYbK.jpg",
+"genre_ids": [
+28,
+53
+],
+"id": 575264,
+"original_language": "en",
+"original_title": "Mission: Impossible - Dead Reckoning Part One",
+"overview": "Ethan Hunt and his IMF team embark on their most dangerous mission yet: To track down a terrifying new weapon that threatens all of humanity before it falls into the wrong hands. With control of the future and the world's fate at stake and dark forces from Ethan's past closing in, a deadly race around the globe begins. Confronted by a mysterious, all-powerful enemy, Ethan must consider that nothing can matter more than his mission—not even the lives of those he cares about most.",
+"popularity": 3180.725,
+"poster_path": "/NNxYkU70HPurnNCSiCjYAmacwm.jpg",
+"release_date": "2023-07-08",
+"title": "Mission: Impossible - Dead Reckoning Part One",
+"video": false,
+"vote_average": 7.673,
+"vote_count": 2173
+},
+{
+"adult": false,
+"backdrop_path": "/7NRGAtu8E4343NSKwhkgmVRDINw.jpg",
+"genre_ids": [
+27,
+9648
+],
+"id": 507089,
+"original_language": "en",
+"original_title": "Five Nights at Freddy's",
+"overview": "Recently fired and desperate for work, a troubled young man named Mike agrees to take a position as a night security guard at an abandoned theme restaurant: Freddy Fazbear's Pizzeria. But he soon discovers that nothing at Freddy's is what it seems.",
+"popularity": 2058.036,
+"poster_path": "/j9mH1pr3IahtraTWxVEMANmPSGR.jpg",
+"release_date": "2023-10-25",
+"title": "Five Nights at Freddy's",
+"video": false,
+"vote_average": 8.127,
+"vote_count": 1852
+}
+  ]
+},
+"GET /tmdb/films/<film>":{
+  "description":"serves an array of film objects found by a specified film search",
+  "exampleResponse":
+  [
+{
+"adult": false,
+"backdrop_path": "/mfFhgR9ILPWbYtvbdyAGUo6fbpT.jpg",
+"genre_ids": [
+14,
+18,
+10749
+],
+"id": 8966,
+"original_language": "en",
+"original_title": "Twilight",
+"overview": "When Bella Swan moves to a small town in the Pacific Northwest, she falls in love with Edward Cullen, a mysterious classmate who reveals himself to be a 108-year-old vampire. Despite Edward's repeated cautions, Bella can't stay away from him, a fatal move that endangers her own life.",
+"popularity": 92.916,
+"poster_path": "/3Gkb6jm6962ADUPaCBqzz9CTbn9.jpg",
+"release_date": "2008-11-20",
+"title": "Twilight",
+"video": false,
+"vote_average": 6.288,
+"vote_count": 12723
+},
+{
+"adult": false,
+"backdrop_path": "/x2vYqKNptvWH2jrKkX6FM0jpfKb.jpg",
+"genre_ids": [
+80,
+53
+],
+"id": 26269,
+"original_language": "en",
+"original_title": "Twilight",
+"overview": "A retired detective accepts a simple task, unaware that it will tear open old, forgotten, but deadly wounds.",
+"popularity": 11.976,
+"poster_path": "/jepRBZNXgsINrbtSiSEdtCYbRMM.jpg",
+"release_date": "1998-03-06",
+"title": "Twilight",
+"video": false,
+"vote_average": 5.982,
+"vote_count": 168
+}
+  ]
+},
+"GET /tmdb/films/<int:film_id>":{
+  "description": "serves an object containing comprehensive information on a film of a given film id. This includes genres, crew, production companies, and more"
+}
 }

@@ -3,32 +3,38 @@
     {
       "username": "yahya",
       "password": "pyramids",
-      "email": "yahya@yahrmyarmy.com"
+      "email": "yahya@yahrmyarmy.com",
+      "avatar": "https://images.pexels.com/photos/16577552/pexels-photo-16577552/free-photo-of-a-kitten-with-a-toy.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     },
     {
       "username": "billy",
       "password": "GOAT",
-      "email": "billy@yahrmyarmy.com"
+      "email": "billy@yahrmyarmy.com",
+      "avatar": "https://images.pexels.com/photos/14603745/pexels-photo-14603745.jpeg?auto=compress&cs=tinysrgb&w=800"
     },
     {
       "username": "luke",
       "password": "Trees",
-      "email": "luke@yahrmyarmy.com"
+      "email": "luke@yahrmyarmy.com",
+      "avatar": "https://images.pexels.com/photos/7211201/pexels-photo-7211201.jpeg?auto=compress&cs=tinysrgb&w=800"
     },
     {
       "username": "craig",
       "password": "greg",
-      "email": "craig@yahrmyarmy.com"
+      "email": "craig@yahrmyarmy.com",
+      "avatar": "https://images.pexels.com/photos/5748853/pexels-photo-5748853.jpeg?auto=compress&cs=tinysrgb&w=800"
     },
     {
       "username": "barbara",
       "password": "fish",
-      "email": "barbara@yahrmyarmy.com"
+      "email": "barbara@yahrmyarmy.com",
+      "avatar": "https://images.pexels.com/photos/16352402/pexels-photo-16352402/free-photo-of-a-kitten-lying-in-purple-sheets.jpeg?auto=compress&cs=tinysrgb&w=800"
     },
     {
       "username": "harry",
       "password": "face",
-      "email": "harry@yahrmyarmy.com"
+      "email": "harry@yahrmyarmy.com",
+      "avatar": "https://images.pexels.com/photos/5681903/pexels-photo-5681903.jpeg?auto=compress&cs=tinysrgb&w=800"
     }
   ]
 }

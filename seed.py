@@ -1,6 +1,5 @@
 import json
-import psycopg2
-from db.config import load_db_config
+from db.connection import get_connection
 
 # Function to seed database
 def seed_database():
@@ -37,8 +36,8 @@ def seed_database():
     create_friendships_table = """
         CREATE TABLE friendships (
         friendship_id SERIAL PRIMARY KEY,
-        user_id INT REFERENCES users(user_id),
-        friend_id INT REFERENCES users(user_id),
+        user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+        friend_id INT REFERENCES users(user_id) ON DELETE CASCADE,
         created_at TIMESTAMP DEFAULT NOW(),
         UNIQUE (user_id, friend_id)
         );
@@ -57,7 +56,8 @@ def seed_database():
         user_values.append(( 
             user["username"],
             user["password"],
-            user["email"]
+            user["email"],
+            user["avatar"]
         ))
 
     drop_users_table = """
@@ -69,15 +69,16 @@ def seed_database():
         user_id SERIAL PRIMARY KEY,
         username VARCHAR(255),
         password VARCHAR(255),
-        email VARCHAR(255)
+        email VARCHAR(255),
+        avatar VARCHAR(400)
         );
     """
 
     insert_user_data = """
         INSERT INTO users 
-        (username, password, email)
+        (username, password, email, avatar)
         VALUES 
-        (%s, %s, %s);
+        (%s, %s, %s, %s);
     """
 
     film_values = []
@@ -154,7 +155,7 @@ def seed_database():
 
     create_watchlist_table = """
         CREATE TABLE watchlist (
-            user_id INT REFERENCES users(user_id),
+            user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
             film_id INT REFERENCES films(id),
             is_watched BOOLEAN DEFAULT FALSE,
             created_at TIMESTAMP DEFAULT NOW(),
@@ -176,7 +177,7 @@ def seed_database():
     create_reviews_table = """
         CREATE TABLE reviews (
             review_id SERIAL PRIMARY KEY,
-            user_id INTEGER REFERENCES users(user_id),
+            user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
             film_id INTEGER REFERENCES films(id),
             body TEXT,
             rating INTEGER,
@@ -209,8 +210,8 @@ def seed_database():
     create_review_comments_table = """
         CREATE TABLE review_comments (
             review_comment_id SERIAL PRIMARY KEY,
-            user_id INTEGER REFERENCES users(user_id),
-            review_id INTEGER REFERENCES reviews(review_id),
+            user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+            review_id INTEGER REFERENCES reviews(review_id) ON DELETE CASCADE,
             body TEXT,
             created_at DATE NOT NULL,
             votes INTEGER NOT NULL
@@ -224,94 +225,88 @@ def seed_database():
         (%s, %s, %s, %s, %s);
     """
     
-    connection = None
+    db_connection = None
     try:
-        params = load_db_config('./db/database.ini')
+        db_connection = get_connection()
+        db_connection.autocommit = True
 
-        connection = psycopg2.connect(**params)
-        cursor = connection.cursor()
+        cursor = db_connection.cursor()    
 
         # Delete the review_comments table
         cursor.execute(drop_review_comments_table)
-        connection.commit() 
+        db_connection.commit() 
         
         # Delete the watchlist table
         cursor.execute(drop_watchlist_table)
-        connection.commit()
+        db_connection.commit()
         
         # Delete the reviews table
         cursor.execute(drop_reviews_table)
-        connection.commit()
+        db_connection.commit()
 
          # Delete the friendships table
         cursor.execute(drop_friendships_table)
-        connection.commit()
+        db_connection.commit()
 
         # Delete the films table
         cursor.execute(drop_films_table)
-        connection.commit()
+        db_connection.commit()
 
         # Delete the users tables
         cursor.execute(drop_users_table)
-        connection.commit()
+        db_connection.commit()
 
         # Create the films table
         cursor.execute(create_films_table)
-        connection.commit()
+        db_connection.commit()
 
         # Create the users table
         cursor.execute(create_users_table)
-        connection.commit()
+        db_connection.commit()
 
         # Create the friendships table
         cursor.execute(create_friendships_table)
-        connection.commit()
+        db_connection.commit()
 
         # Create the watchlist table
         cursor.execute(create_watchlist_table)
-        connection.commit()
+        db_connection.commit()
 
         # Create the reviews table
         cursor.execute(create_reviews_table)
-        connection.commit()
+        db_connection.commit()
 
         # Create the reviews table
         cursor.execute(create_review_comments_table)
-        connection.commit()
+        db_connection.commit()
 
         # Insert data into the films table
         cursor.executemany(insert_film_data, film_values)
-        connection.commit()
+        db_connection.commit()
 
         # Insert data into the users table
         cursor.executemany(insert_user_data, user_values)
-        connection.commit()
+        db_connection.commit()
 
         # Insert data into the friendships table
         cursor.executemany(insert_friendships_data, friendship_values)
-        connection.commit()
+        db_connection.commit()
 
         # Insert data into the watchlist table
         cursor.executemany(insert_watchlist_data, watchlist_values)
-        connection.commit()
+        db_connection.commit()
         
         # Insert data into the reviews table
         cursor.executemany(insert_review_data, review_values)
-        connection.commit()
+        db_connection.commit()
 
         # Insert data into the reviews_comment table
         cursor.executemany(insert_review_comment_data, review_comment_values)
-        connection.commit()
+        db_connection.commit()
 
         print("Data seeded successfully!")
 
-    except psycopg2.Error as e:
+    except Exception as e:
         print("Error:", e)
-
-    finally:
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
-            
+           
 seed_database()

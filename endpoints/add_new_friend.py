@@ -7,8 +7,6 @@ def add_new_friend(data, connection, user_id):
               cursor.execute(INSERT_NEW_FRIEND, (user_id, friend_id,))
               cursor.execute(INSERT_NEW_FRIEND, (friend_id, user_id,))
               new_friendship = cursor.fetchone()
-              print(new_friendship, '<<<< NEW FRIENDS')
-
 
     return {
          "message": "New friendship added", 

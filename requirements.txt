@@ -8,3 +8,5 @@ requests
 asyncio
 asyncpg
 configparser
+Gunicorn
+flask_cors
