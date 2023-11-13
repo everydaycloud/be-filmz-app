@@ -2,7 +2,7 @@ from flask import jsonify, request
 
 def fetch_user_by_username(connection):
 #   print("i'm in")
-  username = request.args.get('username') #username referes to the query
+  username = request.args.get('username') #username refers to the query
 #   print(username,"USERNAME")
   if username:
     with connection: 
@@ -15,12 +15,6 @@ def fetch_user_by_username(connection):
         user=cursor.fetchone()
         
         if user:
-            result = {
-                'user_id': user[0],
-                'username': user[1],
-                'password': user[2],
-                'email': user[3]
-            }
             return jsonify({'user': user}), 200
         else: return {'message': 'User not found'}, 404
   else: return {'message': 'User query required'}, 400
