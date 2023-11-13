@@ -2,7 +2,6 @@ from db.connection import get_connection
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
-from flask_cors import CORS, cross_origin
 from endpoints.fetch_all_films import fetch_all_films
 from endpoints.fetch_films_by_film_id import fetch_films_by_film_id
 from endpoints.add_user import add_new_user
@@ -15,6 +14,7 @@ from endpoints.fetch_user_by_username import fetch_user_by_username
 from endpoints.get_tmbd_data import get_popular_films
 from endpoints.get_tmbd_data import search_for_films
 from endpoints.get_tmbd_data import get_film_by_film_id
+from endpoints.add_new_watchlist_entry import add_new_entry
 from endpoints.get_friends_by_user_id import fetch_friends_by_user_id
 from endpoints.remove_friends_by_friend_id import remove_friends_by_friend_id
 from endpoints.remove_user_by_user_id import remove_user_by_user_id
@@ -108,6 +108,13 @@ def get_user_by_username():
 def add_friend(user_id):
     data = request.get_json()
     result = (add_new_friend(data, connection, user_id))
+    return jsonify(result)
+
+# POST new entry to watchlist ///NEW THING YAHYA
+@app.route("/users/<int:user_id>/watchlist", methods=["POST"])
+def add_watchlist_entry(user_id):
+    data = request.get_json()
+    result = (add_new_entry(data, connection, user_id))
     return jsonify(result)
 
 @app.route("/tmdb/films/popular", methods=["GET"])

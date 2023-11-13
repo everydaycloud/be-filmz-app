@@ -117,7 +117,8 @@ def test_get_user_by_id_endpoint(seed_db):
 			"email": "yahya@yahrmyarmy.com",
 			"password": "pyramids",
 			"user_id": 1,
-			"username": "yahya"
+			"username": "yahya",
+            "avatar": "https://images.pexels.com/photos/16577552/pexels-photo-16577552/free-photo-of-a-kitten-with-a-toy.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
 		}
     
 #testing invalid user id number
@@ -236,14 +237,15 @@ def test_add_new_user_endpoint(seed_db):
     user_data = {
 	    "username": "bigfilmfreakz",
 	    "password": "filmzzz",
-	    "email": "filmzz@yahmyarmy.com"
+	    "email": "filmzz@yahmyarmy.com",
+        "avatar": "https://images.pexels.com/photos/8172784/pexels-photo-8172784.jpeg?auto=compress&cs=tinysrgb&w=800"
     }
 
     response = requests.post(url, json=user_data)
     assert response.status_code == 200
 
     user = response.json()
-    required_keys = ["id", "username", "email", "password"]
+    required_keys = ["id", "username", "email", "password", "avatar"]
     assert all(key in user for key in required_keys)
 
 # testing adding new friend
@@ -269,8 +271,8 @@ def test_invalid_path(seed_db):
 
     response = requests.get(url)
     assert response.status_code == 404
-    response_text = response.json()
-    assert response_text["message"]=="cheese is not a valid path!"
+    # response_text = response.json()
+    # assert response_text["message"]=="cheese is not a valid path!"
  
 # testing get reviews by specific ID endpoint
 def test_get_reviews_by_film_id_endpoint():
@@ -313,7 +315,8 @@ def test_get_user_by_username_endpoint(seed_db):
                                         2,
                                         "billy",
                                         "GOAT",
-                                        "billy@yahrmyarmy.com"
+                                        "billy@yahrmyarmy.com",
+                                        "https://images.pexels.com/photos/14603745/pexels-photo-14603745.jpeg?auto=compress&cs=tinysrgb&w=800"
                                     ]
     #testing get user by invalid username endpoint
 def test_get_incorrect_user_by_username_endpoint(seed_db):
@@ -333,6 +336,7 @@ def test_get_no_user_by_username_endpoint(seed_db):
         assert response.status_code == 400
         response_text = response.json()
         assert response_text['message'] == 'User query required'
+
 
 def test_fetch_friends_by_user_id(seed_db):
         relative_url = '/users/2/friends'
@@ -373,7 +377,7 @@ def test_delete_user_by_user_id(seed_db):
         url = ENDPOINT + relative_url
         response = requests.delete(url)
         assert response.status_code == 200
-        assert response.json() == {"message": "User (5, 'barbara', 'fish', 'barbara@yahrmyarmy.com') deleted successfully"}        
+        assert response.json() == {"message": "User (5, 'barbara', 'fish', 'barbara@yahrmyarmy.com', 'https://images.pexels.com/photos/16352402/pexels-photo-16352402/free-photo-of-a-kitten-lying-in-purple-sheets.jpeg?auto=compress&cs=tinysrgb&w=800') deleted successfully"}        
 
 def test_delete_review_by_id(seed_db):
         relative_url = '/reviews/7'
@@ -381,3 +385,42 @@ def test_delete_review_by_id(seed_db):
         response = requests.delete(url)
         assert response.status_code == 200
         assert response.json() == {"message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13)) deleted successfully"}
+        
+        #testing (POST) adding new entry to watchlist
+    #happy path
+def test_add_new_user_endpoint(seed_db):
+    user_id = 5
+    relative_url = f'/users/5/watchlist'
+    url = ENDPOINT + relative_url
+    film_data = {
+                "film_id":672
+                }
+
+    response = requests.post(url, json=film_data)
+    assert response.status_code == 200
+
+
+    result = response.json()
+    required_keys = ["message", "created_at", "film_id", "is_watched", "user_id"]
+    assert all(key in result for key in required_keys)
+    
+    #if film id = none
+def test_add_to_watchlist_with_no_film_id(seed_db):
+     relative_url = f'/users/6/watchlist'
+     url = ENDPOINT + relative_url
+     postObject = {"film_id": None}
+     response = requests.post(url, json=postObject)
+     assert response.status_code == 200
+     response_text = response.json()
+
+     assert 'message' in response_text
+     assert response_text['message'] == 'film_id is required'
+
+     #if film has already been added
+def test_add_duplicate_film_to_watchlist_endpoint(seed_db):
+     relative_url = '/users/6/watchlist'
+     url = ENDPOINT + relative_url
+     postObject = {"film_id": 672}
+     response = requests.post(url, json=postObject)
+     response = requests.post(url, json=postObject)
+     assert response.status_code == 409

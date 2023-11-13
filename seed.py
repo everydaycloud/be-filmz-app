@@ -56,7 +56,8 @@ def seed_database():
         user_values.append(( 
             user["username"],
             user["password"],
-            user["email"]
+            user["email"],
+            user["avatar"]
         ))
 
     drop_users_table = """
@@ -68,15 +69,16 @@ def seed_database():
         user_id SERIAL PRIMARY KEY,
         username VARCHAR(255),
         password VARCHAR(255),
-        email VARCHAR(255)
+        email VARCHAR(255),
+        avatar VARCHAR(400)
         );
     """
 
     insert_user_data = """
         INSERT INTO users 
-        (username, password, email)
+        (username, password, email, avatar)
         VALUES 
-        (%s, %s, %s);
+        (%s, %s, %s, %s);
     """
 
     film_values = []
