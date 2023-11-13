@@ -24,6 +24,8 @@
 -- FROM friendships f
 -- JOIN users u ON f.user_id = u.user_id
 -- JOIN users uf ON f.friend_id = uf.user_id
--- WHERE u.user_id = 2;
+-- -- WHERE u.user_id = 2;
 
-SELECT * FROM reviews;
+-- SELECT * FROM reviews;
+
+SELECT * FROM users;
