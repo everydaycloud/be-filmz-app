@@ -8,7 +8,7 @@ def add_new_entry(data, connection, user_id):
     film_id = data["film_id"]
 
     if film_id == None:
-         return {'message': 'film_id is required'}, 400
+         return {'message': 'film_id is required'}
     
     try:
         with connection: 
@@ -31,7 +31,7 @@ def add_new_entry(data, connection, user_id):
         return response_data
     
     except psycopg2.IntegrityError:
-        abort(400, description='This fasdadfdasfailm has already been added.')
+        abort(409, {'message':'This film has already been added.'})
     # except psycopg2.IntegrityError:
     #     abort(409, description='This film has already been added.')
       
