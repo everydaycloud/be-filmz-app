@@ -120,6 +120,7 @@ def get_tmdb_search(film):
 def get_tmdb_film(film_id):
     return get_film_by_film_id(film_id)
 
+# GET friends by user id
 @app.route("/users/<user_id>/friends", methods=["GET"])
 @cross_origin() 
 def get_friends_by_user_id(user_id):
@@ -142,3 +143,8 @@ def delete_user_by_user_id(user_id):
 def delete_review_by_id(review_id):
     return remove_review_by_id(review_id, connection)
 
+#Any other path
+@app.route('/<path:other>')
+@cross_origin()
+def other_path(other):
+    return {"message": f"{other} is not a valid path!"},404
