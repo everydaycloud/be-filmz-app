@@ -418,6 +418,7 @@ def test_delete_friends_by_friend_id_no_friends(seed_db):
         assert response.status_code == 200
         assert response.json() == {'message': 'Friendship not found'}
 
+#Delete_user_by_user_id
 def test_delete_user_by_user_id(seed_db):
         relative_url = '/users/5'
         url = ENDPOINT + relative_url
@@ -425,6 +426,20 @@ def test_delete_user_by_user_id(seed_db):
         assert response.status_code == 200
         assert response.json() == {"message": "User (5, 'barbara', 'fish', 'barbara@yahrmyarmy.com', 'https://images.pexels.com/photos/16352402/pexels-photo-16352402/free-photo-of-a-kitten-lying-in-purple-sheets.jpeg?auto=compress&cs=tinysrgb&w=800') deleted successfully"}        
 
+def test_delete_user_by_user_id_not_found(seed_db):
+        relative_url = '/users/9000'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 200
+        assert response.json() == {"message": "User not found"}
+        
+def test_delete_user_by_user_id_invalid(seed_db):
+        relative_url = '/users/five'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 405
+
+#delete_review_by_id
 def test_delete_review_by_id(seed_db):
         relative_url = '/reviews/7'
         url = ENDPOINT + relative_url
@@ -432,6 +447,19 @@ def test_delete_review_by_id(seed_db):
         assert response.status_code == 200
         assert response.json() == {"message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13)) deleted successfully"}
         
+def test_delete_review_by_id_not_found(seed_db):
+        relative_url = '/reviews/9000'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 200
+        assert response.json() == {'message': 'Review not found'}
+
+def test_delete_review_by_id_invalid(seed_db):
+    relative_url = '/reviews/seven'
+    url = ENDPOINT + relative_url
+    response = requests.delete(url)
+    assert response.status_code == 405  
+
         #testing (POST) adding new entry to watchlist
     #happy path
 def test_add_new_user_endpoint(seed_db):
