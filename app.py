@@ -110,6 +110,7 @@ def add_friend(user_id):
 
 # POST new entry to watchlist
 @app.route("/users/<int:user_id>/watchlist", methods=["POST"])
+
 def add_watchlist_entry(user_id):
     data = request.get_json()
     result = (add_new_entry(data, connection, user_id))

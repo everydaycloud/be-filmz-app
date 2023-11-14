@@ -32,6 +32,5 @@ def add_new_entry(data, connection, user_id):
     
     except psycopg2.IntegrityError:
         abort(409, {'message':'This film has already been added.'})
-    # except psycopg2.IntegrityError:
-    #     abort(409, description='This film has already been added.')
+
       
