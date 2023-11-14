@@ -20,9 +20,9 @@ from endpoints.remove_friends_by_friend_id import remove_friends_by_friend_id
 from endpoints.remove_user_by_user_id import remove_user_by_user_id
 from endpoints.remove_review_by_id import remove_review_by_id
 from endpoints.patch_is_watched import toggle_is_watched
+from endpoints.authenticate_user import authenticate_user
 
 import json
-
 
 load_dotenv()
 
@@ -144,6 +144,13 @@ def delete_user_by_user_id(user_id):
 @cross_origin() 
 def delete_review_by_id(review_id):
     return remove_review_by_id(review_id, connection)
+
+# GET Authentication for user
+@app.route("/authenticate", methods=["POST"])
+@cross_origin() 
+def check_authentication():
+    data = request.get_json()
+    return authenticate_user(connection, data)
 
 # PATCH isWatched by film_id
 

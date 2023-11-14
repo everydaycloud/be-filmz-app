@@ -143,7 +143,7 @@ def test_get_users_by_user_id_errors(seed_db):
     response_text = response.json()
     assert response_text['message'] == "Invalid ID!"
 
-# testing get revies by specific user ID endpoint
+# testing get reviews by specific user ID endpoint
 def test_get_reviews_by_user_id_endpoint(seed_db):
     relative_url = '/users/2/reviews'
     url = ENDPOINT + relative_url
@@ -155,14 +155,13 @@ def test_get_reviews_by_user_id_endpoint(seed_db):
     expected_review_structure = {
         "body": str,
         "created_at": str,
-        "email": str,
         "film_id": int,
-        "password": str,
         "rating": int,
         "review_id": int,
         "user_id": int,
         "username": str,
-        "votes": int
+        "votes": int,
+        "original_title": str
     }
     for review in returned_reviews:
         assert all(key in review for key in expected_review_structure)
@@ -284,22 +283,14 @@ def test_get_reviews_by_film_id_endpoint():
     reviews = response.json()['reviews']
     assert len(reviews) == 2
     assert reviews[0] == {
-      "body": "This movie is pure magic!",
-      "created_at": "Tue, 07 Nov 2023 00:00:00 GMT",
-      "film_id": 671,
-      "rating": 5,
-      "review_id": 1,
-      "user_id": 1,
-      "votes": 10
-    }
-    assert reviews[1] == {
-      "body": "The magic of the first movie is unforgettable!",
-      "created_at": "Sun, 12 Nov 2023 00:00:00 GMT",
-      "film_id": 671,
-      "rating": 5,
-      "review_id": 6,
-      "user_id": 5,
-      "votes": 12
+        "body": "This movie is pure magic!",
+		"created_at": "Tue, 07 Nov 2023 00:00:00 GMT",
+		"film_id": 671,
+		"original_title": "Harry Potter and the Philosopher's Stone",
+		"rating": 5,
+		"review_id": 1,
+		"user_id": 1,
+		"votes": 10
     }
 
 #testing invalid id number (get reviews by film id)
@@ -418,6 +409,7 @@ def test_delete_friends_by_friend_id_no_friends(seed_db):
         assert response.status_code == 200
         assert response.json() == {'message': 'Friendship not found'}
 
+#Delete_user_by_user_id
 def test_delete_user_by_user_id(seed_db):
         relative_url = '/users/5'
         url = ENDPOINT + relative_url
@@ -425,13 +417,40 @@ def test_delete_user_by_user_id(seed_db):
         assert response.status_code == 200
         assert response.json() == {"message": "User (5, 'barbara', 'fish', 'barbara@yahrmyarmy.com', 'https://images.pexels.com/photos/16352402/pexels-photo-16352402/free-photo-of-a-kitten-lying-in-purple-sheets.jpeg?auto=compress&cs=tinysrgb&w=800') deleted successfully"}        
 
+def test_delete_user_by_user_id_not_found(seed_db):
+        relative_url = '/users/9000'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 200
+        assert response.json() == {"message": "User not found"}
+        
+def test_delete_user_by_user_id_invalid(seed_db):
+        relative_url = '/users/five'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 405
+
+#delete_review_by_id
 def test_delete_review_by_id(seed_db):
         relative_url = '/reviews/7'
         url = ENDPOINT + relative_url
         response = requests.delete(url)
         assert response.status_code == 200
-        assert response.json() == {"message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13)) deleted successfully"}
+        assert response.json() == {"message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13), 'Harry Potter and the Deathly Hallows: Part 2') deleted successfully"}
         
+def test_delete_review_by_id_not_found(seed_db):
+        relative_url = '/reviews/9000'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 200
+        assert response.json() == {'message': 'Review not found'}
+
+def test_delete_review_by_id_invalid(seed_db):
+    relative_url = '/reviews/seven'
+    url = ENDPOINT + relative_url
+    response = requests.delete(url)
+    assert response.status_code == 405  
+
         #testing (POST) adding new entry to watchlist
     #happy path
 def test_add_new_user_endpoint(seed_db):
