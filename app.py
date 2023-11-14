@@ -19,6 +19,7 @@ from endpoints.get_friends_by_user_id import fetch_friends_by_user_id
 from endpoints.remove_friends_by_friend_id import remove_friends_by_friend_id
 from endpoints.remove_user_by_user_id import remove_user_by_user_id
 from endpoints.remove_review_by_id import remove_review_by_id
+from endpoints.patch_is_watched import toggle_is_watched
 
 import json
 
@@ -102,7 +103,8 @@ def add_friend(user_id):
 @app.route("/users/<user_id>/watchlist", methods=["POST"])
 def add_watchlist_entry(user_id):
     data = request.get_json()
-    result = (add_new_entry(data, connection, user_id))
+    film_id = data["film_id"]
+    result = (add_new_entry(film_id, connection, user_id))
     return jsonify(result)
 
 @app.route("/tmdb/films/popular", methods=["GET"])
@@ -142,6 +144,16 @@ def delete_user_by_user_id(user_id):
 @cross_origin() 
 def delete_review_by_id(review_id):
     return remove_review_by_id(review_id, connection)
+
+# PATCH isWatched by film_id
+
+@app.route("/users/<user_id>/watchlist/<film_id>", methods=["PATCH"])
+@cross_origin()
+def patch_is_watched_property(user_id, film_id):
+    #currently takes a request object in the form {"is_watched":"true/false"}, boolean has to be written as a string to be parsed correctly
+    data = request.get_json()
+    is_watched_update = data["is_watched"]
+    return toggle_is_watched(user_id, film_id, connection, is_watched_update)
 
 #Any other path
 @app.route('/<path:other>')

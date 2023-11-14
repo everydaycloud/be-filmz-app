@@ -3,9 +3,8 @@ import psycopg2
 
 INSERT_NEW_ENTRY = "INSERT INTO watchlist (user_id, film_id) VALUES (%s, %s) RETURNING user_id, film_id, is_watched, created_at;"
 
-def add_new_entry(data, connection, user_id):
-    print(data, "log of data")
-    film_id = data["film_id"]
+def add_new_entry(film_id, connection, user_id):
+
 
     if film_id == None:
          return {'message': 'film_id is required'}
