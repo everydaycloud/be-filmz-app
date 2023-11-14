@@ -26,4 +26,27 @@
 -- JOIN users uf ON f.friend_id = uf.user_id
 -- -- WHERE u.user_id = 2;
 
-SELECT * FROM reviews;
+-- SELECT * FROM reviews;
+
+    -- SELECT
+    --     f.*,
+    --     r.original_title,
+    --     AVG(r.rating) AS average_rating
+    -- FROM
+    --     films f
+    -- JOIN
+    --     reviews r ON f.id = r.film_id
+    -- WHERE
+    --     f.id = 672
+    -- GROUP BY
+    --     f.id, r.original_title;
+
+                    SELECT 
+                        f.*,
+                        COALESCE(AVG(r.rating), 0) AS average_rating
+                    FROM 
+                        films f
+                    LEFT JOIN 
+                        reviews r ON f.id = r.film_id
+                    GROUP BY 
+                        f.id;

@@ -29,13 +29,13 @@ def test_get_all_films_endpoint(seed_db):
     film_list = response.json()
     required_keys = [
         "id", 
-        "title", 
+        "original_title", 
         "overview", 
-        "poster_path", 
-        "release_date", 
-        "vote_average", 
-        "vote_count"
+        "poster_path",
+        "release_date",
+        "average_rating"
         ]
+    
     for film in film_list['films']:
         if all(key in film for key in required_keys):
             assert True
@@ -49,12 +49,11 @@ def test_get_film_by_title(seed_db):
     film_list = response.json()
     required_keys = [
         "id", 
-        "title", 
+        "original_title", 
         "overview", 
         "poster_path", 
-        "release_date", 
-        "vote_average", 
-        "vote_count"
+        "release_date",  
+        "average_rating"
         ]
     for film in film_list['films']:
         if all(key in film for key in required_keys):
@@ -67,18 +66,18 @@ def test_get_film_by_title_doesnt_exist(seed_db):
     response=requests.get(url)
     assert response.status_code == 200
     film_not_found = response.json()
-    assert film_not_found == {"message": "We couldn't find this film."}
+    assert film_not_found == {"message": "We couldn't find any films with the provided title."}
 
 #testing get films by film id endpoint
 def test_get_films_by_film_id(seed_db):
-    relative_url= ["/films/767"]
+    relative_url= ["/films/672"]
     for rel_url in relative_url:
         url = urljoin(ENDPOINT, rel_url)
 
     response = requests.get(url)
     film = response.json()
     required_keys = ["id", "original_title", "overview", "poster_path", 
-               "release_date", "vote_average", "vote_count"]
+               "release_date", "average_rating"]
     if all(key in film for key in required_keys):
             assert True
     else: assert False
@@ -160,8 +159,8 @@ def test_get_reviews_by_user_id_endpoint(seed_db):
         "review_id": int,
         "user_id": int,
         "username": str,
-        "votes": int,
-        "original_title": str
+        "original_title": str,
+        "avatar": str
     }
     for review in returned_reviews:
         assert all(key in review for key in expected_review_structure)

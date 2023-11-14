@@ -15,7 +15,7 @@ def seed_database():
         
     with open('./db/data/test-data/reviews.json', 'r') as json_file:
         review_data = json.load(json_file)
-        print(review_data)
+        
 
     with open('./db/data/test-data/review_comments.json', 'r') as json_file:
         review_comments_data = json.load(json_file)
