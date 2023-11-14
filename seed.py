@@ -181,10 +181,10 @@ def seed_database():
             review_id SERIAL PRIMARY KEY,
             user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
             film_id INTEGER REFERENCES films(id),
-            body TEXT,
+            body TEXT NOT NULL,
             rating INTEGER,
-            votes INTEGER NOT NULL,
-            created_at DATE NOT NULL,
+            votes INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
             original_title VARCHAR(255) REFERENCES films(original_title)
         );
     """

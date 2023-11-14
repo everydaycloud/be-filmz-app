@@ -435,8 +435,9 @@ def test_delete_review_by_id(seed_db):
         url = ENDPOINT + relative_url
         response = requests.delete(url)
         assert response.status_code == 200
-        assert response.json() == {"message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13), 'Harry Potter and the Deathly Hallows: Part 2') deleted successfully"}
-        
+        assert response.json() == {"message": "Review - An epic conclusion to an amazing series! - deleted successfully"}
+
+
 def test_delete_review_by_id_not_found(seed_db):
         relative_url = '/reviews/9000'
         url = ENDPOINT + relative_url
@@ -488,3 +489,21 @@ def test_add_duplicate_film_to_watchlist_endpoint(seed_db):
      response = requests.post(url, json=postObject)
      response = requests.post(url, json=postObject)
      assert response.status_code == 409
+
+def test_add_new_review_by_film_id(seed_db):
+    relative_url = '/films/672/reviews'
+    url = ENDPOINT + relative_url
+    film_data = {
+	"body": "whoooooooooa",
+	"user_id": 6,
+	"original_title": "Harry Potter and the Philosopher's Stone",
+	"rating": 3,
+	"votes": 0
+    }
+    response = requests.post(url, json=film_data)
+    assert response.status_code == 200
+
+    result = response.json()
+    required_keys = ["message", "created_at", "film_id", "original_title", "rating", "body", "user_id"]
+    assert all(key in result for key in required_keys)
+    
