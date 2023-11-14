@@ -1,7 +1,17 @@
 def fetch_films_by_film_id(connection, film_id):
     query = """
-    SELECT * FROM films
-    WHERE id=%s;
+    SELECT
+        f.*,
+        r.original_title,
+        AVG(r.rating) AS average_rating
+    FROM
+        films f
+    JOIN
+        reviews r ON f.id = r.film_id
+    WHERE
+        f.id = %s
+    GROUP BY
+        f.id, r.original_title;
     """
     if film_id.isdigit():
         with connection:
@@ -17,8 +27,7 @@ def fetch_films_by_film_id(connection, film_id):
                         "overview": film[6],
                         "poster_path": film[8],
                         "release_date": film[9],
-                        "vote_average": film[12],
-                        "vote_count": film[13]
+                        "average_rating": film[15]
                     })
                 cursor.close()
                 return result[0]
