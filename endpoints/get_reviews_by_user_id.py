@@ -15,6 +15,7 @@ def get_reviews_by_user_id(user_id, connection):
                     if result:
                         column_names = [desc[0] for desc in cursor.description]
                         reviews = [dict(zip(column_names, row)) for row in result]
+                        
                         return jsonify({'reviews': reviews}) 
                     else:
                            return { "message": "This user doesn't exist!"}, 404

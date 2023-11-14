@@ -26,12 +26,4 @@
 -- JOIN users uf ON f.friend_id = uf.user_id
 -- -- WHERE u.user_id = 2;
 
--- SELECT * FROM reviews;
-
-SELECT u.username AS username, f.user_id AS user_id, uf.username AS friend_name, uf.avatar AS avatar, f.created_at AS friends_since, f.friend_id AS friend_id
-        FROM friendships f
-        JOIN users u ON f.user_id = u.user_id
-        JOIN users uf ON f.friend_id = uf.user_id
-        WHERE u.user_id = 1;
-
-SELECT avatar FROM users;
+SELECT * FROM reviews;

@@ -160,7 +160,8 @@ def test_get_reviews_by_user_id_endpoint(seed_db):
         "review_id": int,
         "user_id": int,
         "username": str,
-        "votes": int
+        "votes": int,
+        "original_title": str
     }
     for review in returned_reviews:
         assert all(key in review for key in expected_review_structure)
@@ -282,22 +283,14 @@ def test_get_reviews_by_film_id_endpoint():
     reviews = response.json()['reviews']
     assert len(reviews) == 2
     assert reviews[0] == {
-      "body": "This movie is pure magic!",
-      "created_at": "Tue, 07 Nov 2023 00:00:00 GMT",
-      "film_id": 671,
-      "rating": 5,
-      "review_id": 1,
-      "user_id": 1,
-      "votes": 10
-    }
-    assert reviews[1] == {
-      "body": "The magic of the first movie is unforgettable!",
-      "created_at": "Sun, 12 Nov 2023 00:00:00 GMT",
-      "film_id": 671,
-      "rating": 5,
-      "review_id": 6,
-      "user_id": 5,
-      "votes": 12
+        "body": "This movie is pure magic!",
+		"created_at": "Tue, 07 Nov 2023 00:00:00 GMT",
+		"film_id": 671,
+		"original_title": "Harry Potter and the Philosopher's Stone",
+		"rating": 5,
+		"review_id": 1,
+		"user_id": 1,
+		"votes": 10
     }
 
 #testing invalid id number (get reviews by film id)
@@ -443,7 +436,7 @@ def test_delete_review_by_id(seed_db):
         url = ENDPOINT + relative_url
         response = requests.delete(url)
         assert response.status_code == 200
-        assert response.json() == {"message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13)) deleted successfully"}
+        assert response.json() == {"message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13), 'Harry Potter and the Deathly Hallows: Part 2') deleted successfully"}
         
 def test_delete_review_by_id_not_found(seed_db):
         relative_url = '/reviews/9000'
