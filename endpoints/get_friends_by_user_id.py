@@ -30,6 +30,7 @@ def fetch_friends_by_user_id(user_id, connection):
                     result = []
                     for friend in friends:
                         result.append({
+                            
                             "my_id": friend[1], 
                             "friend_id": friend[4], 
                             "friend_name": friend[2], 
