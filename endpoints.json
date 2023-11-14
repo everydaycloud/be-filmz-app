@@ -315,5 +315,25 @@
 },
 "GET /tmdb/films/<int:film_id>":{
   "description": "serves an object containing comprehensive information on a film of a given film id. This includes genres, crew, production companies, and more"
+},
+"POST /films/:films_id/reviews": {
+  "description": "adds new review based on film id",
+  "queries": {
+    "body": "whoooooooooa",
+    "user_id": 6,
+    "original_title": "Harry Potter and the Philosopher's Stone",
+    "rating": 3,
+    "votes": 0
+  },
+  "exampleResponse":
+  {
+    "body": "whoooooooooa",
+    "created_at": "Tue, 14 Nov 2023 17:20:44 GMT",
+    "film_id": 671,
+    "message": "New review added",
+    "original_title": "Harry Potter and the Philosopher's Stone",
+    "rating": 3,
+    "user_id": 6
+  }
 }
 }

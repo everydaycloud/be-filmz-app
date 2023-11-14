@@ -19,8 +19,10 @@ from endpoints.get_friends_by_user_id import fetch_friends_by_user_id
 from endpoints.remove_friends_by_friend_id import remove_friends_by_friend_id
 from endpoints.remove_user_by_user_id import remove_user_by_user_id
 from endpoints.remove_review_by_id import remove_review_by_id
+from endpoints.add_review_by_film_id import add_review_by_film_id
 from endpoints.patch_is_watched import toggle_is_watched
 from endpoints.authenticate_user import authenticate_user
+
 
 import json
 
@@ -167,3 +169,10 @@ def patch_is_watched_property(user_id, film_id):
 @cross_origin()
 def other_path(other):
     return {"message": f"{other} is not a valid path!"},404
+
+#post review by film id
+@app.route('/films/<film_id>/reviews', methods=["POST"])
+@cross_origin()
+def post_review_by_film_id(film_id):
+    data = request.get_json()
+    return add_review_by_film_id(data, film_id, connection)
