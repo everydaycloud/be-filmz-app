@@ -5,10 +5,10 @@ def get_reviews_by_user_id(user_id, connection):
         with connection:
                 with connection.cursor() as cursor:
                     cursor.execute('''
-                                SELECT * 
-                                FROM reviews
-                                JOIN users ON reviews.user_id = users.user_id
-                                WHERE reviews.user_id = (%s);
+                                SELECT avatar, body, created_at, film_id, rating, review_id, r.user_id, username, votes
+                                FROM reviews as r
+                                JOIN users ON r.user_id = users.user_id
+                                WHERE r.user_id = (%s);
                                 ''', 
                                 (user_id,))
                     result = cursor.fetchall()

@@ -27,10 +27,3 @@
 -- -- WHERE u.user_id = 2;
 
 SELECT * FROM reviews;
-
--- SELECT * FROM users;
-
-                                -- SELECT * 
-                                -- FROM reviews
-                                -- JOIN users ON reviews.user_id = users.user_id
-                                -- WHERE reviews.user_id = 2;

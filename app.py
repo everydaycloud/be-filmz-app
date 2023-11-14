@@ -20,6 +20,8 @@ from endpoints.remove_friends_by_friend_id import remove_friends_by_friend_id
 from endpoints.remove_user_by_user_id import remove_user_by_user_id
 from endpoints.remove_review_by_id import remove_review_by_id
 
+
+
 import json
 
 
@@ -33,6 +35,7 @@ connection = get_connection()
 # GET all endpoints
 @app.route("/", methods=["GET"])
 @cross_origin() 
+@cross_origin() 
 def get_endpoints():
     file = open("./endpoints.json")
     data = json.load(file)
@@ -40,6 +43,7 @@ def get_endpoints():
 
 # GET all films
 @app.route("/films", methods=["GET"])
+@cross_origin() 
 @cross_origin() 
 def get_all_films():
     result = fetch_all_films(connection)
@@ -55,11 +59,13 @@ def get_films_by_film_id(film_id):
 # GET a user by user_id
 @app.route('/users/<user_id>', methods=['GET'])
 @cross_origin() 
+@cross_origin() 
 def get_single_user(user_id):
        return get_user_by_user_id(user_id, connection)
 
 # GET reviews by user_id
 @app.route('/users/<user_id>/reviews', methods=['GET'])
+@cross_origin() 
 @cross_origin() 
 def get_reviews(user_id):
     return get_reviews_by_user_id(user_id, connection)
@@ -67,17 +73,20 @@ def get_reviews(user_id):
 # GET reviews by (film)id
 @app.route('/films/<film_id>/reviews', methods=['GET'])
 @cross_origin() 
+@cross_origin() 
 def get_reviews_by_film_id(film_id):
     return fetch_reviews_by_film_id(film_id, connection)
 
 # GET watchlist by user_id
 @app.route('/users/<user_id>/watchlist', methods=['GET'])
 @cross_origin() 
+@cross_origin() 
 def get_watchlist(user_id):
     return get_watchlist_by_user_id(user_id, connection)
 
 # POST user
 @app.route("/users", methods=["POST"])
+@cross_origin() 
 @cross_origin() 
 def post_new_user():
     data = request.get_json()
@@ -93,13 +102,15 @@ def get_user_by_username():
 # POST new friend to friends table 
 @app.route("/users/<user_id>/friends", methods=["POST"])
 @cross_origin() 
+@cross_origin() 
 def add_friend(user_id):
     data = request.get_json()
     result = (add_new_friend(data, connection, user_id))
     return jsonify(result)
 
 # POST new entry to watchlist
-@app.route("/users/<user_id>/watchlist", methods=["POST"])
+@app.route("/users/<int:user_id>/watchlist", methods=["POST"])
+
 def add_watchlist_entry(user_id):
     data = request.get_json()
     result = (add_new_entry(data, connection, user_id))
@@ -122,7 +133,6 @@ def get_tmdb_film(film_id):
 
 # GET friends by user id
 @app.route("/users/<user_id>/friends", methods=["GET"])
-@cross_origin() 
 def get_friends_by_user_id(user_id):
     return fetch_friends_by_user_id(user_id, connection)
 
