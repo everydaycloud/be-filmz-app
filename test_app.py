@@ -566,3 +566,64 @@ def test_patch_invalid_film_id_input(seed_db):
 
     result = response.json()
     assert result == {"message": "Invalid Film ID!"}
+
+#testing (DELETE) removing existing watchlist entry
+#happy path
+def test_delete_existing_watchlist_entry(seed_db):
+    user_id = 1
+
+    relative_url = f'/users/{user_id}/watchlist'
+    url = ENDPOINT + relative_url
+    film_data = {
+                "film_id":672
+                }
+    
+    response = requests.delete(url, json=film_data)
+
+    assert response.status_code in [200, 204]
+
+
+    response_data = response.json()
+    assert response_data['message'] == 'Watchlist entry deleted successfully'
+
+#entry doesnt exist
+def test_delete_nonexistent_watchlist_entry(seed_db):
+    user_id = 1
+
+    relative_url = f'/users/{user_id}/watchlist'
+    url = ENDPOINT + relative_url
+    film_data = {
+                "film_id":9000
+                }
+
+    response = requests.delete(url, json=film_data)
+
+    assert response.status_code in [200, 204]
+
+    response_data = response.json()
+    assert response_data['message'] == 'Watchlist entry not found'
+
+# ##### delete below
+# def test_delete_friends_by_friend_id(seed_db):
+#         relative_url = '/users/2/friends/1'
+#         url = ENDPOINT + relative_url
+#         response = requests.delete(url)
+#         assert response.status_code == 200
+#         assert response.json() == {'message': 'Friendship deleted successfully'}
+
+# ####
+# def test_add_new_user_endpoint(seed_db):
+#     user_id = 5
+#     relative_url = f'/users/5/watchlist'
+#     url = ENDPOINT + relative_url
+#     film_data = {
+#                 "film_id":672
+#                 }
+
+#     response = requests.post(url, json=film_data)
+#     assert response.status_code == 200
+
+
+#     result = response.json()
+#     required_keys = ["message", "created_at", "film_id", "is_watched", "user_id"]
+#     assert all(key in result for key in required_keys)
