@@ -17,7 +17,7 @@ headers = {
 
 
 
-def get_popular_films():
+def fetch_popular_films():
 
     base_url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1"
     response = requests.get(base_url, headers=headers)
@@ -50,7 +50,7 @@ def search_for_films(film):
         print(f"Error: {response.status_code} - {response.text}")
         return {'error': {response.status_code}, 'msg': {response.text}}
 
-def get_film_by_film_id(film_id):
+def fetch_film_by_film_id(film_id):
 
     base_url = f"https://api.themoviedb.org/3/movie/{film_id}"
     params = {

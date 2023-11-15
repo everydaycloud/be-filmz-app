@@ -1,6 +1,6 @@
 from flask import jsonify
 
-def get_user_by_user_id(user_id, connection): 
+def fetch_user_by_user_id(user_id, connection): 
     if user_id.isdigit(): 
         with connection:
                 with connection.cursor() as cursor:

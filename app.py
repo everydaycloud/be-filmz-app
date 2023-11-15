@@ -5,17 +5,17 @@ from flask_cors import CORS, cross_origin
 from endpoints.fetch_all_films import fetch_all_films
 from endpoints.fetch_films_by_film_id import fetch_films_by_film_id
 from endpoints.add_user import add_new_user
-from endpoints.get_reviews_by_user_id import get_reviews_by_user_id
-from endpoints.get_reviews_by_film_id import fetch_reviews_by_film_id
-from endpoints.get_user_by_user_id import get_user_by_user_id
-from endpoints.get_watchlist_by_user_id import get_watchlist_by_user_id
+from endpoints.fetch_reviews_by_user_id import fetch_reviews_by_user_id
+from endpoints.fetch_reviews_by_film_id import fetch_reviews_by_film_id
+from endpoints.fetch_user_by_user_id import fetch_user_by_user_id
+from endpoints.fetch_watchlist_by_user_id import fetch_watchlist_by_user_id
 from endpoints.add_new_friend import add_new_friend
 from endpoints.fetch_user_by_username import fetch_user_by_username
-from endpoints.get_tmbd_data import get_popular_films
-from endpoints.get_tmbd_data import search_for_films
-from endpoints.get_tmbd_data import get_film_by_film_id
+from endpoints.fetch_tmbd_data import fetch_popular_films
+from endpoints.fetch_tmbd_data import search_for_films
+from endpoints.fetch_tmbd_data import fetch_film_by_film_id
 from endpoints.add_new_watchlist_entry import add_new_entry
-from endpoints.get_friends_by_user_id import fetch_friends_by_user_id
+from endpoints.fetch_friends_by_user_id import fetch_friends_by_user_id
 from endpoints.remove_friends_by_friend_id import remove_friends_by_friend_id
 from endpoints.remove_user_by_user_id import remove_user_by_user_id
 from endpoints.remove_review_by_id import remove_review_by_id
@@ -59,13 +59,13 @@ def get_films_by_film_id(film_id):
 @app.route('/users/<user_id>', methods=['GET'])
 @cross_origin() 
 def get_single_user(user_id):
-       return get_user_by_user_id(user_id, connection)
+       return fetch_user_by_user_id(user_id, connection)
 
 # GET reviews by user_id
 @app.route('/users/<user_id>/reviews', methods=['GET'])
 @cross_origin() 
 def get_reviews(user_id):
-    return get_reviews_by_user_id(user_id, connection)
+    return fetch_reviews_by_user_id(user_id, connection)
 
 # GET reviews by film_id
 @app.route('/films/<film_id>/reviews', methods=['GET'])
@@ -77,7 +77,7 @@ def get_reviews_by_film_id(film_id):
 @app.route('/users/<user_id>/watchlist', methods=['GET'])
 @cross_origin() 
 def get_watchlist(user_id):
-    return get_watchlist_by_user_id(user_id, connection)
+    return fetch_watchlist_by_user_id(user_id, connection)
 
 # POST user
 @app.route("/users", methods=["POST"])
@@ -112,7 +112,7 @@ def add_watchlist_entry(user_id):
 @app.route("/tmdb/films/popular", methods=["GET"])
 @cross_origin() 
 def get_tmdb_popular():
-    return get_popular_films()
+    return fetch_popular_films()
 
 @app.route("/tmdb/films/<film>", methods=["GET"])
 @cross_origin() 
@@ -122,7 +122,7 @@ def get_tmdb_search(film):
 @app.route("/tmdb/films/<int:film_id>", methods=["GET"])
 @cross_origin() 
 def get_tmdb_film(film_id):
-    return get_film_by_film_id(film_id)
+    return fetch_film_by_film_id(film_id)
 
 # GET friends by user id
 @app.route("/users/<user_id>/friends", methods=["GET"])
