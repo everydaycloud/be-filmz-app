@@ -508,3 +508,61 @@ def test_add_new_review_by_film_id(seed_db):
     required_keys = ["message", "created_at", "film_id", "original_title", "rating", "body", "user_id"]
     assert all(key in result for key in required_keys)
     
+    
+def test_patch_is_watched_endpoint(seed_db):
+    relative_url = '/users/1/watchlist/671'
+    url = ENDPOINT + relative_url
+    request = {"is_watched"  : "true"}
+
+    response = requests.patch(url, json=request)
+    assert response.status_code == 200
+
+
+    result = response.json()
+    required_keys = ["created_at", "film_id", "is_watched", "user_id"]
+    assert all(key in result for key in required_keys)
+    assert result["is_watched"]==True
+
+def test_patch_invalid_user_id(seed_db):
+    relative_url = '/users/99999999/watchlist/671'
+    url = ENDPOINT + relative_url
+    request = {"is_watched"  : "true"}
+
+    response = requests.patch(url, json=request)
+    assert response.status_code == 404
+
+    result = response.json()
+    assert result == {"message": "This user doesn't exist!"}
+    
+def test_patch_invalid_film_id(seed_db):
+    relative_url = '/users/1/watchlist/9999999'
+    url = ENDPOINT + relative_url
+    request = {"is_watched"  : "true"}
+
+    response = requests.patch(url, json=request)
+    assert response.status_code == 404
+
+    result = response.json()
+    assert result == {"message": "This film doesn't exist!"}
+    
+def test_patch_invalid_user_id_input(seed_db):
+    relative_url = '/users/cheese/watchlist/671'
+    url = ENDPOINT + relative_url
+    request = {"is_watched"  : "true"}
+
+    response = requests.patch(url, json=request)
+    assert response.status_code == 400
+
+    result = response.json()
+    assert result == {"message": "Invalid User ID!"}
+    
+def test_patch_invalid_film_id_input(seed_db):
+    relative_url = '/users/1/watchlist/cheese'
+    url = ENDPOINT + relative_url
+    request = {"is_watched"  : "true"}
+
+    response = requests.patch(url, json=request)
+    assert response.status_code == 400
+
+    result = response.json()
+    assert result == {"message": "Invalid Film ID!"}

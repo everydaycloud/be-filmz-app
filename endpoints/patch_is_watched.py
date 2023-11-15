@@ -1,16 +1,33 @@
-# 1. declare toggle_is_watched function
-# 2. write SQL query to see if the film is in the user's watchlist
-# 3. If it isn't, write another SQL query to post to watchlist, and set
-# is_watched to true
-# 4. If the film IS in the watchlist, we don't want another SQL query 
-# and we will just continue with switching the property to true.
-# note: We want to be able to set the property to true or false depending
-# on which boolean is in the PATCH request object. 
-
-from .add_new_watchlist_entry import add_new_entry
 from flask import jsonify
 
 def toggle_is_watched(user_id, film_id, connection, is_watched_update):
+    
+    #Error Handling for this request:
+    if not user_id.isdigit():
+        return {"message": "Invalid User ID!"}, 400
+    
+    if not film_id.isdigit():
+        return {"message": "Invalid Film ID!"}, 400
+    
+    user_exists_query= "SELECT * FROM users WHERE user_id = %s;"
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(user_exists_query, (user_id,))
+            user_exists = cursor.fetchone()
+
+            if not user_exists:
+                return {"message": "This user doesn't exist!"}, 404
+            
+    film_exists_query= "SELECT * FROM films WHERE id = %s;"
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(film_exists_query, (film_id,))
+            user_exists = cursor.fetchone()
+
+            if not user_exists:
+                return {"message": "This film doesn't exist!"}, 404        
+    
+    #PATCH request:
     with connection:
         with connection.cursor() as cursor:
             cursor.execute(
