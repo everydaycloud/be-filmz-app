@@ -67,7 +67,7 @@ def get_single_user(user_id):
 def get_reviews(user_id):
     return get_reviews_by_user_id(user_id, connection)
 
-# GET reviews by (film)id
+# GET reviews by film_id
 @app.route('/films/<film_id>/reviews', methods=['GET'])
 @cross_origin() 
 def get_reviews_by_film_id(film_id):
@@ -147,7 +147,7 @@ def delete_user_by_user_id(user_id):
 def delete_review_by_id(review_id):
     return remove_review_by_id(review_id, connection)
 
-# GET Authentication for user
+# POST Authentication for user
 @app.route("/authenticate", methods=["POST"])
 @cross_origin() 
 def check_authentication():
