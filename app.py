@@ -102,7 +102,7 @@ def add_friend(user_id):
     return jsonify(result)
 
 # POST new entry to watchlist
-@app.route("/users/<user_id>/watchlist", methods=["POST"])
+@app.route("/users/<int:user_id>/watchlist", methods=["POST"])
 def add_watchlist_entry(user_id):
     data = request.get_json()
     film_id = data["film_id"]
