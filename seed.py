@@ -185,7 +185,7 @@ def seed_database():
             rating INTEGER,
             votes INTEGER,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-            original_title VARCHAR(255) REFERENCES films(original_title)
+            original_title VARCHAR(255) REFERENCES films(original_title),
             UNIQUE(user_id, film_id)
         );
     """
