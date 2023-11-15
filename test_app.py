@@ -289,7 +289,8 @@ def test_get_reviews_by_film_id_endpoint():
 		"rating": 5,
 		"review_id": 1,
 		"user_id": 1,
-		"votes": 10
+        'username': 'yahya',
+        'avatar': 'https://images.pexels.com/photos/16577552/pexels-photo-16577552/free-photo-of-a-kitten-with-a-toy.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
     }
 
 #testing invalid id number (get reviews by film id)
