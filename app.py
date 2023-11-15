@@ -22,6 +22,7 @@ from endpoints.remove_review_by_id import remove_review_by_id
 from endpoints.add_review_by_film_id import add_review_by_film_id
 from endpoints.patch_is_watched import toggle_is_watched
 from endpoints.authenticate_user import authenticate_user
+from endpoints.remove_watchlist_entry import remove_watchlist_entry
 
 
 import json
@@ -176,3 +177,10 @@ def other_path(other):
 def post_review_by_film_id(film_id):
     data = request.get_json()
     return add_review_by_film_id(data, film_id, connection)
+
+#delete watchlist entry
+@app.route("/users/<int:user_id>/watchlist", methods=["DELETE"])
+def delete_watchlist(user_id):
+    data = request.get_json()
+    film_id = data["film_id"]
+    return remove_watchlist_entry(user_id, film_id, connection)
