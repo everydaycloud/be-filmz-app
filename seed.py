@@ -182,7 +182,8 @@ def seed_database():
             body TEXT,
             rating INTEGER,
             votes INTEGER NOT NULL,
-            created_at DATE NOT NULL
+            created_at DATE NOT NULL,
+            UNIQUE(user_id, film_id)
         );
     """
     

@@ -143,7 +143,7 @@ def test_get_users_by_user_id_errors(seed_db):
     response_text = response.json()
     assert response_text['message'] == "Invalid ID!"
 
-# testing get revies by specific user ID endpoint
+# testing get reviews by specific user ID endpoint
 def test_get_reviews_by_user_id_endpoint(seed_db):
     relative_url = '/users/2/reviews'
     url = ENDPOINT + relative_url

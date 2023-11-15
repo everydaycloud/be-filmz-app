@@ -28,4 +28,8 @@
 
 -- SELECT * FROM reviews;
 
-SELECT * FROM users;
+SELECT u.username AS username, u.avatar AS avatar, f.user_id AS user_id, uf.username AS friend_name, f.created_at AS friends_since, f.friend_id AS friend_id
+        FROM friendships f
+        JOIN users u ON f.user_id = u.user_id
+        JOIN users uf ON f.friend_id = uf.user_id
+        WHERE u.user_id = 1;

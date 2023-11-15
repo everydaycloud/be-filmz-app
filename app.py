@@ -53,8 +53,6 @@ def get_all_films():
 @app.route("/films/<film_id>", methods=["GET"])
 @cross_origin() 
 def get_films_by_film_id(film_id):
-@cross_origin() 
-def get_films_by_film_id(film_id):
     result = fetch_films_by_film_id(connection, film_id)
     return result
 
@@ -110,7 +108,7 @@ def add_friend(user_id):
     result = (add_new_friend(data, connection, user_id))
     return jsonify(result)
 
-# POST new entry to watchlist ///NEW THING YAHYA
+# POST new entry to watchlist
 @app.route("/users/<int:user_id>/watchlist", methods=["POST"])
 def add_watchlist_entry(user_id):
     data = request.get_json()
