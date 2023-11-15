@@ -1,8 +1,1 @@
 You are now connected to database "filmz_app_test" as user "macbookair2021".
- username |                                                                       avatar                                                                        | user_id | friend_name |       friends_since        | friend_id 
-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------+---------+-------------+----------------------------+-----------
- yahya    | https://images.pexels.com/photos/16577552/pexels-photo-16577552/free-photo-of-a-kitten-with-a-toy.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2 |       1 | billy       | 2023-11-14 11:58:23.765725 |         2
- yahya    | https://images.pexels.com/photos/16577552/pexels-photo-16577552/free-photo-of-a-kitten-with-a-toy.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2 |       1 | luke        | 2023-11-14 11:58:23.766227 |         3
- yahya    | https://images.pexels.com/photos/16577552/pexels-photo-16577552/free-photo-of-a-kitten-with-a-toy.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2 |       1 | craig       | 2023-11-14 11:58:23.7664   |         4
-(3 rows)
-

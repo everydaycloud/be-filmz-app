@@ -15,6 +15,7 @@ def seed_database():
         
     with open('./db/data/test-data/reviews.json', 'r') as json_file:
         review_data = json.load(json_file)
+        
 
     with open('./db/data/test-data/review_comments.json', 'r') as json_file:
         review_comments_data = json.load(json_file)
@@ -67,9 +68,9 @@ def seed_database():
     create_users_table = """
         CREATE TABLE users (
         user_id SERIAL PRIMARY KEY,
-        username VARCHAR(255),
-        password VARCHAR(255),
-        email VARCHAR(255),
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
         avatar VARCHAR(400)
         );
     """
@@ -112,7 +113,7 @@ def seed_database():
             genre_ids INT ARRAY,        
             id SERIAL PRIMARY KEY,
             original_language VARCHAR(255),
-            original_title VARCHAR(255),
+            original_title VARCHAR(255) UNIQUE,
             overview TEXT, 
             popularity NUMERIC, 
             poster_path VARCHAR(255),
@@ -140,6 +141,7 @@ def seed_database():
             review["rating"],
             review["votes"],
             review["created_at"],
+            review["original_title"]
         ))
 
     watchlist_values = []
@@ -179,19 +181,20 @@ def seed_database():
             review_id SERIAL PRIMARY KEY,
             user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
             film_id INTEGER REFERENCES films(id),
-            body TEXT,
+            body TEXT NOT NULL,
             rating INTEGER,
-            votes INTEGER NOT NULL,
-            created_at DATE NOT NULL,
+            votes INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            original_title VARCHAR(255) REFERENCES films(original_title)
             UNIQUE(user_id, film_id)
         );
     """
     
     insert_review_data = """
         INSERT INTO reviews 
-        (user_id, film_id, body, rating, votes, created_at)
+        (user_id, film_id, body, rating, votes, created_at, original_title)
         VALUES 
-        (%s, %s, %s, %s, %s, %s);
+        ( %s, %s, %s, %s, %s, %s, %s);
     """
 
     review_comment_values = []

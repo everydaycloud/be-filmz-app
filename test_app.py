@@ -29,13 +29,13 @@ def test_get_all_films_endpoint(seed_db):
     film_list = response.json()
     required_keys = [
         "id", 
-        "title", 
+        "original_title", 
         "overview", 
-        "poster_path", 
-        "release_date", 
-        "vote_average", 
-        "vote_count"
+        "poster_path",
+        "release_date",
+        "average_rating"
         ]
+    
     for film in film_list['films']:
         if all(key in film for key in required_keys):
             assert True
@@ -49,12 +49,11 @@ def test_get_film_by_title(seed_db):
     film_list = response.json()
     required_keys = [
         "id", 
-        "title", 
+        "original_title", 
         "overview", 
         "poster_path", 
-        "release_date", 
-        "vote_average", 
-        "vote_count"
+        "release_date",  
+        "average_rating"
         ]
     for film in film_list['films']:
         if all(key in film for key in required_keys):
@@ -67,18 +66,18 @@ def test_get_film_by_title_doesnt_exist(seed_db):
     response=requests.get(url)
     assert response.status_code == 200
     film_not_found = response.json()
-    assert film_not_found == {"message": "We couldn't find this film."}
+    assert film_not_found == {"message": "We couldn't find any films with the provided title."}
 
 #testing get films by film id endpoint
 def test_get_films_by_film_id(seed_db):
-    relative_url= ["/films/767"]
+    relative_url= ["/films/672"]
     for rel_url in relative_url:
         url = urljoin(ENDPOINT, rel_url)
 
     response = requests.get(url)
     film = response.json()
     required_keys = ["id", "original_title", "overview", "poster_path", 
-               "release_date", "vote_average", "vote_count"]
+               "release_date", "average_rating"]
     if all(key in film for key in required_keys):
             assert True
     else: assert False
@@ -155,14 +154,13 @@ def test_get_reviews_by_user_id_endpoint(seed_db):
     expected_review_structure = {
         "body": str,
         "created_at": str,
-        "email": str,
         "film_id": int,
-        "password": str,
         "rating": int,
         "review_id": int,
         "user_id": int,
         "username": str,
-        "votes": int
+        "original_title": str,
+        "avatar": str
     }
     for review in returned_reviews:
         assert all(key in review for key in expected_review_structure)
@@ -284,22 +282,15 @@ def test_get_reviews_by_film_id_endpoint():
     reviews = response.json()['reviews']
     assert len(reviews) == 2
     assert reviews[0] == {
-      "body": "This movie is pure magic!",
-      "created_at": "Tue, 07 Nov 2023 00:00:00 GMT",
-      "film_id": 671,
-      "rating": 5,
-      "review_id": 1,
-      "user_id": 1,
-      "votes": 10
-    }
-    assert reviews[1] == {
-      "body": "The magic of the first movie is unforgettable!",
-      "created_at": "Sun, 12 Nov 2023 00:00:00 GMT",
-      "film_id": 671,
-      "rating": 5,
-      "review_id": 6,
-      "user_id": 5,
-      "votes": 12
+        "body": "This movie is pure magic!",
+		"created_at": "Tue, 07 Nov 2023 00:00:00 GMT",
+		"film_id": 671,
+		"original_title": "Harry Potter and the Philosopher's Stone",
+		"rating": 5,
+		"review_id": 1,
+		"user_id": 1,
+        'username': 'yahya',
+        'avatar': 'https://images.pexels.com/photos/16577552/pexels-photo-16577552/free-photo-of-a-kitten-with-a-toy.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
     }
 
 #testing invalid id number (get reviews by film id)
@@ -418,6 +409,7 @@ def test_delete_friends_by_friend_id_no_friends(seed_db):
         assert response.status_code == 200
         assert response.json() == {'message': 'Friendship not found'}
 
+#Delete_user_by_user_id
 def test_delete_user_by_user_id(seed_db):
         relative_url = '/users/5'
         url = ENDPOINT + relative_url
@@ -425,13 +417,41 @@ def test_delete_user_by_user_id(seed_db):
         assert response.status_code == 200
         assert response.json() == {"message": "User (5, 'barbara', 'fish', 'barbara@yahrmyarmy.com', 'https://images.pexels.com/photos/16352402/pexels-photo-16352402/free-photo-of-a-kitten-lying-in-purple-sheets.jpeg?auto=compress&cs=tinysrgb&w=800') deleted successfully"}        
 
+def test_delete_user_by_user_id_not_found(seed_db):
+        relative_url = '/users/9000'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 200
+        assert response.json() == {"message": "User not found"}
+        
+def test_delete_user_by_user_id_invalid(seed_db):
+        relative_url = '/users/five'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 405
+
+#delete_review_by_id
 def test_delete_review_by_id(seed_db):
         relative_url = '/reviews/7'
         url = ENDPOINT + relative_url
         response = requests.delete(url)
         assert response.status_code == 200
-        assert response.json() == {"message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13)) deleted successfully"}
-        
+        assert response.json() == {"message": "Review - An epic conclusion to an amazing series! - deleted successfully"}
+
+
+def test_delete_review_by_id_not_found(seed_db):
+        relative_url = '/reviews/9000'
+        url = ENDPOINT + relative_url
+        response = requests.delete(url)
+        assert response.status_code == 200
+        assert response.json() == {'message': 'Review not found'}
+
+def test_delete_review_by_id_invalid(seed_db):
+    relative_url = '/reviews/seven'
+    url = ENDPOINT + relative_url
+    response = requests.delete(url)
+    assert response.status_code == 405  
+
         #testing (POST) adding new entry to watchlist
     #happy path
 def test_add_new_user_endpoint(seed_db):
@@ -470,3 +490,79 @@ def test_add_duplicate_film_to_watchlist_endpoint(seed_db):
      response = requests.post(url, json=postObject)
      response = requests.post(url, json=postObject)
      assert response.status_code == 409
+
+def test_add_new_review_by_film_id(seed_db):
+    relative_url = '/films/672/reviews'
+    url = ENDPOINT + relative_url
+    film_data = {
+	"body": "whoooooooooa",
+	"user_id": 6,
+	"original_title": "Harry Potter and the Philosopher's Stone",
+	"rating": 3,
+	"votes": 0
+    }
+    response = requests.post(url, json=film_data)
+    assert response.status_code == 200
+
+    result = response.json()
+    required_keys = ["message", "created_at", "film_id", "original_title", "rating", "body", "user_id"]
+    assert all(key in result for key in required_keys)
+    
+    
+def test_patch_is_watched_endpoint(seed_db):
+    relative_url = '/users/1/watchlist/671'
+    url = ENDPOINT + relative_url
+    request = {"is_watched"  : "true"}
+
+    response = requests.patch(url, json=request)
+    assert response.status_code == 200
+
+
+    result = response.json()
+    required_keys = ["created_at", "film_id", "is_watched", "user_id"]
+    assert all(key in result for key in required_keys)
+    assert result["is_watched"]==True
+
+def test_patch_invalid_user_id(seed_db):
+    relative_url = '/users/99999999/watchlist/671'
+    url = ENDPOINT + relative_url
+    request = {"is_watched"  : "true"}
+
+    response = requests.patch(url, json=request)
+    assert response.status_code == 404
+
+    result = response.json()
+    assert result == {"message": "This user doesn't exist!"}
+    
+def test_patch_invalid_film_id(seed_db):
+    relative_url = '/users/1/watchlist/9999999'
+    url = ENDPOINT + relative_url
+    request = {"is_watched"  : "true"}
+
+    response = requests.patch(url, json=request)
+    assert response.status_code == 404
+
+    result = response.json()
+    assert result == {"message": "This film doesn't exist!"}
+    
+def test_patch_invalid_user_id_input(seed_db):
+    relative_url = '/users/cheese/watchlist/671'
+    url = ENDPOINT + relative_url
+    request = {"is_watched"  : "true"}
+
+    response = requests.patch(url, json=request)
+    assert response.status_code == 400
+
+    result = response.json()
+    assert result == {"message": "Invalid User ID!"}
+    
+def test_patch_invalid_film_id_input(seed_db):
+    relative_url = '/users/1/watchlist/cheese'
+    url = ENDPOINT + relative_url
+    request = {"is_watched"  : "true"}
+
+    response = requests.patch(url, json=request)
+    assert response.status_code == 400
+
+    result = response.json()
+    assert result == {"message": "Invalid Film ID!"}

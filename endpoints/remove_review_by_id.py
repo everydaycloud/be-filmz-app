@@ -11,7 +11,7 @@ def remove_review_by_id(review_id, connection):
             deleted_review = cursor.fetchone()
 
             if deleted_review:
-                return jsonify({'message': f'Review {deleted_review} deleted successfully'})
+                return jsonify({'message': f'Review - {deleted_review[3]} - deleted successfully'})
             else:
                 return jsonify({'message': 'Review not found'})
             

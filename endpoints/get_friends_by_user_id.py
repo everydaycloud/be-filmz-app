@@ -26,15 +26,16 @@ def fetch_friends_by_user_id(user_id, connection):
             with connection.cursor() as cursor:
                 cursor.execute(friends_query, (new_user_id,))
                 friends = cursor.fetchall()
+                print(friends, 'FRIENDS')
                 if friends:
                     result = []
                     for friend in friends:
                         result.append({
-                            "avatar": friend[5],
-                            "my_id": friend[1], 
-                            "friend_id": friend[4], 
-                            "friend_name": friend[2], 
-                            "friends_since": friend[3],
+                            "my_id": friend[2], 
+                            "friend_avatar": friend[0],
+                            "friend_id": friend[5], 
+                            "friend_name": friend[3], 
+                            "friends_since": friend[4],
                         })  
                     return jsonify(result)
                 else:

@@ -5,7 +5,8 @@
     "body": "This movie is pure magic!",
     "rating": 5,
     "votes": 10,
-    "created_at": "2023-11-07"
+    "created_at": "2023-11-07",
+    "original_title": "Harry Potter and the Philosopher's Stone"
   },
   {
     "user_id": 2,
@@ -13,7 +14,8 @@
     "body": "The best movie in the series!",
     "rating": 5,
     "votes": 8,
-    "created_at": "2023-11-08"
+    "created_at": "2023-11-08",
+    "original_title": "Harry Potter and the Prisoner of Azkaban"
   },
   {
     "user_id": 3,
@@ -21,7 +23,8 @@
     "body": "Not as good as the books, but still enjoyable.",
     "rating": 4,
     "votes": 6,
-    "created_at": "2023-11-09"
+    "created_at": "2023-11-09",
+    "original_title": "Harry Potter and the Order of the Phoenix"
   },
   {
     "user_id": 4,
@@ -29,7 +32,8 @@
     "body": "Another fantastic installment in the series!",
     "rating": 5,
     "votes": 7,
-    "created_at": "2023-11-10"
+    "created_at": "2023-11-10",
+    "original_title": "Harry Potter and the Chamber of Secrets"
   },
   {
     "user_id": 5,
@@ -37,7 +41,8 @@
     "body": "I can't get enough of Hermione's brilliance!",
     "rating": 5,
     "votes": 9,
-    "created_at": "2023-11-11"
+    "created_at": "2023-11-11",
+    "original_title": "Harry Potter and the Goblet of Fire"
   },
   {
     "user_id": 5,
@@ -45,7 +50,8 @@
     "body": "The magic of the first movie is unforgettable!",
     "rating": 5,
     "votes": 12,
-    "created_at": "2023-11-12"
+    "created_at": "2023-11-12",
+    "original_title": "Harry Potter and the Philosopher's Stone"
   },
   {
     "user_id": 4,
@@ -53,7 +59,8 @@
     "body": "An epic conclusion to an amazing series!",
     "rating": 5,
     "votes": 11,
-    "created_at": "2023-11-13"
+    "created_at": "2023-11-13",
+    "original_title": "Harry Potter and the Deathly Hallows: Part 2"
   },
   {
     "user_id": 3,
@@ -61,7 +68,8 @@
     "body": "Chamber of Secrets is a thrilling adventure!",
     "rating": 4,
     "votes": 9,
-    "created_at": "2023-11-14"
+    "created_at": "2023-11-14",
+    "original_title": "Harry Potter and the Chamber of Secrets"
   },
   {
     "user_id": 2,
@@ -69,7 +77,8 @@
     "body": "Goblet of Fire is packed with action and surprises!",
     "rating": 4,
     "votes": 8,
-    "created_at": "2023-11-15"
+    "created_at": "2023-11-15",
+    "original_title": "Harry Potter and the Prisoner of Azkaban"
   },
   {
     "user_id": 2,
@@ -77,6 +86,7 @@
     "body": "Order of the Phoenix is a rollercoaster of emotions!",
     "rating": 5,
     "votes": 10,
-    "created_at": "2023-11-16"
+    "created_at": "2023-11-16",
+    "original_title": "Harry Potter and the Goblet of Fire"
   }
 ]

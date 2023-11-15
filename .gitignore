@@ -3,3 +3,5 @@
 playground*
 database.ini
 **/__pycache__
+playground.sql
+playground.txt

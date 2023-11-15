@@ -35,7 +35,7 @@
   },
     "POST /users": {
       "description": "adds new user returning an object of the added user",
-      "queries": {
+      "exampleRequest": {
         "username": "bigfilmfreakz",
         "password": "filmzzz",
         "email": "filmzz@yahmyarmy.com"
@@ -82,7 +82,8 @@
       }
     ]
     
-  },
+  }
+},
   "DELETE /users/:user_id/friends/:friend_id": {
     "description": "removes a friend from a user's friend list",
     "queries": [],
@@ -102,27 +103,57 @@
     {
       "message": "Review (7, 4, 12445, 'An epic conclusion to an amazing series!', 5, 11, datetime.date(2023, 11, 13)) deleted successfully"
     }
-  }
-},
+  },
 "GET /users/<user_id>/reviews":{
   "description": "serves an array of review objects by user of user id",
   "queries":[],
   "exampleResponse":
   {
-    "reviews": [
-      {
-        "body": "This movie is pure magic!",
-        "created_at": "Tue, 07 Nov 2023 00:00:00 GMT",
-        "email": "yahya@yahrmyarmy.com",
-        "film_id": 671,
-        "password": "pyramids",
-        "rating": 5,
-        "review_id": 1,
-        "user_id": 1,
-        "username": "yahya",
-        "votes": 10
-      }
-    ]
+      "reviews": [
+        {
+          "avatar": "https://images.pexels.com/photos/14603745/pexels-photo-14603745.jpeg?auto=compress&cs=tinysrgb&w=800",
+          "body": "The best movie in the series!",
+          "created_at": "Wed, 08 Nov 2023 00:00:00 GMT",
+          "email": "billy@yahrmyarmy.com",
+          "film_id": 673,
+          "original_title": "Harry Potter and the Prisoner of Azkaban",
+          "password": "GOAT",
+          "rating": 5,
+          "review_id": 2,
+          "user_id": 2,
+          "username": "billy",
+          "votes": 8
+        },
+        {
+          "avatar": "https://images.pexels.com/photos/14603745/pexels-photo-14603745.jpeg?auto=compress&cs=tinysrgb&w=800",
+          "body": "Goblet of Fire is packed with action and surprises!",
+          "created_at": "Wed, 15 Nov 2023 00:00:00 GMT",
+          "email": "billy@yahrmyarmy.com",
+          "film_id": 673,
+          "original_title": "Harry Potter and the Prisoner of Azkaban",
+          "password": "GOAT",
+          "rating": 4,
+          "review_id": 9,
+          "user_id": 2,
+          "username": "billy",
+          "votes": 8
+        },
+        {
+          "avatar": "https://images.pexels.com/photos/14603745/pexels-photo-14603745.jpeg?auto=compress&cs=tinysrgb&w=800",
+          "body": "Order of the Phoenix is a rollercoaster of emotions!",
+          "created_at": "Thu, 16 Nov 2023 00:00:00 GMT",
+          "email": "billy@yahrmyarmy.com",
+          "film_id": 674,
+          "original_title": "Harry Potter and the Goblet of Fire",
+          "password": "GOAT",
+          "rating": 5,
+          "review_id": 10,
+          "user_id": 2,
+          "username": "billy",
+          "votes": 10
+        }
+      ]
+    
   }
 },
 "GET /films/<film_id>/reviews":{
@@ -180,6 +211,18 @@
 "POST /users/<user_id>/friends":{
   "description": "posts a new friends object to a user's friend table. User is selected by user id",
   "queries":[]
+},
+"POST /users/<user_id>/watchlist":{
+  "description": "posts a new film object to a user's profile by user id, returning a watchlist object",
+  "queries":[],
+  "exampleRequest":{"film_id": 674},
+  "exampleResponse":{
+    "created_at": "Mon, 13 Nov 2023 16:31:55 GMT",
+    "film_id": 674,
+    "is_watched": false,
+    "message": "New entry added",
+    "user_id": 1
+  }
 },
 "GET /tmdb/films/popular":{
   "description": "serves an array of popular film objects from the external tmdb API",
@@ -272,5 +315,40 @@
 },
 "GET /tmdb/films/<int:film_id>":{
   "description": "serves an object containing comprehensive information on a film of a given film id. This includes genres, crew, production companies, and more"
+},
+"POST /films/:films_id/reviews": {
+  "description": "adds new review based on film id",
+  "queries": {
+    "body": "whoooooooooa",
+    "user_id": 6,
+    "original_title": "Harry Potter and the Philosopher's Stone",
+    "rating": 3,
+    "votes": 0
+  },
+  "exampleResponse":
+  {
+    "body": "whoooooooooa",
+    "created_at": "Tue, 14 Nov 2023 17:20:44 GMT",
+    "film_id": 671,
+    "message": "New review added",
+    "original_title": "Harry Potter and the Philosopher's Stone",
+    "rating": 3,
+    "user_id": 6
+  }
+},
+"PATCH /users/<user_id>/watchlist/<film_id>":{
+  "description": "Alters the 'is_watched' property of a specified film in a specified user's watchlist to a boolean outlined in the request",
+  "exampleRequest": { "is_watched"  : "true" },
+  "exampleResponse":{
+    "created_at": "Wed, 15 Nov 2023 09:53:11 GMT",
+    "film_id": 671,
+    "is_watched": true,
+    "user_id": 1
+  }
+},
+"POST /authenticate":{
+  "description":"Authenticates a user who is trying to log in to the film website",
+  "exampleRequest": {"username":"username", "password":"password"},
+  "exampleResponse": {"loggedIn": "True", "username": "username", "avatar": "user_data[username]['avatar']"}
 }
 }
