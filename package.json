@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "http-errors": "^2.0.0"
+  },
+  "scripts": {
+    "setup-dbs": "psql -f ./db/setup.sql",
+    "seed": "",
+    "test": "pytest",
+    "start": "flask run",
+    "seed-prod": ""
   }
 }
